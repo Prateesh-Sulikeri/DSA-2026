@@ -15,5 +15,12 @@ Detailed explanations and structured notes are maintained here:
 
 - Chapter 01: Two Pointer Approach
 
+---
+
+## 🧩 Topic-wise Questions Solved
+
+### Chapter 01: Two Pointer Approach
+- Question 01: Two Sum  
+- Question 02: Container With Most Water  
 
 ---
