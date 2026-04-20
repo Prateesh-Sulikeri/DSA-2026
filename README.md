@@ -7,7 +7,7 @@ A repository for practicing Data Structures & Algorithms through pattern-based p
 ## 🌐 Notes
 
 Detailed explanations and structured notes are maintained here:  
-👉 https://jelly-plow-5e7.notion.site/DSA-2026-92f52dc762da48b48d205c497483ae94
+👉 https://prateesh-sulikeri.notion.site/DSA-2026-92f52dc762da48b48d205c497483ae94
 
 ---
 
