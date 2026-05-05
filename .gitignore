@@ -32,3 +32,26 @@ Desktop.ini
 # ----------------------------
 *.tmp
 *.temp
+
+# C++ compiled binaries
+*.exe
+*.out
+*.app
+
+# Object files
+*.o
+*.obj
+
+# Static / dynamic libs
+*.a
+*.lib
+*.so
+*.dll
+*.dylib
+
+# Debug / build artifacts
+*.pdb
+*.ilk
+
+# Your bin folder
+bin/
