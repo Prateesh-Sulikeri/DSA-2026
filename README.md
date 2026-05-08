@@ -28,7 +28,8 @@ Detailed explanations and structured notes are maintained here:
 - Question 05: Move Zeros
 - Question 06: Sort Colors [Dutch National Flag]
 - Question 07: Trapping Rain Water
-
+- Question 08: Four Sum
+- Question 09: Remove Duplicates from Sorted Array II
 ---
 
 ### Chapter 02: Sliding Window
@@ -37,20 +38,17 @@ Detailed explanations and structured notes are maintained here:
 - Question 03: Max Sum of Distinct sub-array lenght k 
 - Question 04: Fruit into basket
 - Question 05: Longest Substring Without Repeating Characters 
-
+- Question 06: Longest Repeating Character Replacement
 
 ## Upcoming:
 
 ### Two Pointers:
-- 4 Sum
-- Remove Duplicates from Sorted Array II
 - Valid Palindrome II
 - Boats to Save People
 
 ---
 
 ### Sliding Window:
-- Longest Repeating Character Replacement
 - Minimum Window Substring ← VERY important
 - Permutation in String
 - Binary Subarrays With Sum
