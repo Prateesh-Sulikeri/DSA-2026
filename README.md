@@ -30,6 +30,9 @@ Detailed explanations and structured notes are maintained here:
 - Question 07: Trapping Rain Water
 - Question 08: Four Sum
 - Question 09: Remove Duplicates from Sorted Array II
+- Question 10: Valid Palindrome II
+- Question 11: Boats to Save People
+- Question 12: Assign cookies
 ---
 
 ### Chapter 02: Sliding Window
@@ -43,8 +46,7 @@ Detailed explanations and structured notes are maintained here:
 ## Upcoming:
 
 ### Two Pointers:
-- Valid Palindrome II
-- Boats to Save People
+
 
 ---
 
