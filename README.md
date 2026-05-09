@@ -45,11 +45,6 @@ Detailed explanations and structured notes are maintained here:
 
 ## Upcoming:
 
-### Two Pointers:
-
-
----
-
 ### Sliding Window:
 - Minimum Window Substring ← VERY important
 - Permutation in String
