@@ -42,6 +42,12 @@ Detailed explanations and structured notes are maintained here:
 - Question 04: Fruit into basket
 - Question 05: Longest Substring Without Repeating Characters 
 - Question 06: Longest Repeating Character Replacement
+---
+
+### Chapter 03: Intervals
+- Question 01: Meeting rooms
+- Question 02: Insert intervals
+- Question 03: Non overlapping intervals
 
 ## Upcoming:
 
