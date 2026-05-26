@@ -48,6 +48,8 @@ Detailed explanations and structured notes are maintained here:
 - Question 01: Meeting rooms
 - Question 02: Insert intervals
 - Question 03: Non overlapping intervals
+- Question 04: Merge Intervals
+- Question 05: Employee Free Time
 
 ## Upcoming:
 
