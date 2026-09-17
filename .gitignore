@@ -16,6 +16,7 @@ bin/
 # VS Code (local settings)
 # ----------------------------
 .vscode/
+.zed/
 
 # If you WANT to keep tasks.json, use instead:
 # .vscode/*
