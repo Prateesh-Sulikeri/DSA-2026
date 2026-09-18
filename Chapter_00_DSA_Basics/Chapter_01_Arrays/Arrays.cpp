@@ -607,6 +607,39 @@ using namespace std;
    when you intend to mutate. By-value only when you deliberately want a copy.
    ========================================================================== */
 
+    void byValue(vector<int> vect) {
+        vect[0] = 999;
+        printArray(vect, "Vect when printed inside byValue: ");
+    }
+
+    void byReference(vector<int>& vect) {
+        vect[0] = 999;
+        printArray(vect, "Vect when printed inside byReference: ");
+    }
+
+    void constRef(const vector<int>& vect) {
+        // WARN: Would give me compilation issues
+        //vect[0] = 999;
+        printArray(vect, "Vect when printed inside constRef: ");
+    }
+
+    void partC_passing() {
+        vector<int> vect = {10, 20, 30, 40};
+        printArray(vect, "Original vector: ");
+        cout << endl;
+        cout <<  "Passing by value: " << endl;
+        byValue(vect);
+        printArray(vect, "After byValue: ");
+        cout << endl;
+        cout << "Passing by reference: " << endl;
+        byReference(vect);
+        printArray(vect, "After byReference: ");
+        cout << endl;
+        cout << "Passing to constant reference: " << endl;
+        constRef(vect);
+        printArray(vect, "After constRef: ");
+        cout << "\n\n";
+    }
 
 /* ==========================================================================
    INFO: PART D -- BUILD YOUR OWN: class DynamicArray
@@ -668,5 +701,6 @@ int main() {
     cout << "\n==============================================================\n\n\n";
     partB_operations();
     cout << "\n==============================================================\n\n\n";
+    partC_passing();
     return 0;
 }
