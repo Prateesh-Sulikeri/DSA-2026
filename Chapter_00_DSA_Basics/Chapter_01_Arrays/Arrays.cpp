@@ -1,5 +1,13 @@
+#include <algorithm>
 #include <bits/stdc++.h>
+#include <cstddef>
+#include <functional>
 #include <ios>
+#include <iterator>
+#include <numeric>
+#include <ostream>
+#include <string>
+#include <vector>
 using namespace std;
 
 /*
@@ -119,26 +127,17 @@ using namespace std;
 
     // Helper function for A.1
     void process(int arr[]) {
-        // INFO: This would only send the int* pointer because of Array-to-pointer decay. if we need array to retain the array type/size then we would need to pass it by reference making the function signature: void process(int (&arr)[5])
+        // INFO: only the int* arrives here -- array-to-pointer decay. To keep the
+        //       type and size, take a reference: void process(int (&arr)[5]).
         // XXX: Answer: sizeof(arr) / sizeof(arr[0]) would throw an compilation error here
-        // INFO: CORRECTION -- not a compile error. It COMPILES (gcc only warns,
-        //       -Wsizeof-array-argument) and prints 2, as the output below shows.
-        //       A compile error would be the merciful outcome; instead you get a
-        //       plausible-looking number that is silently garbage, and the bug
-        //       ships. THAT is why decay is dangerous -- so you pass a size
-        //       alongside the pointer, take int (&arr)[5], or just use vector.
+        // INFO: CORRECTION -- not a compile error. It compiles (gcc only warns)
+        //       and prints 2, not 5: a plausible-looking number that is silently
+        //       garbage. That is exactly why decay is dangerous.
         // WARN: TRAP -- sizeof on an array PARAMETER measures the pointer, always.
         //
-        // The three lines below are commented out ON PURPOSE: they are the proof,
-        // but they are also the one thing in this file that makes -Wall noisy
-        // (-Wsizeof-array-argument, twice). A clean build is the signal that
-        // nothing is wrong, so we don't spend it on a demo we've already run.
-        // Uncomment, build, read the output, comment them back:
-        //
-        //     sizeof(arr)                = 8   <- an int*, not the array
-        //     sizeof(arr[0])             = 4
-        //     sizeof(arr)/sizeof(arr[0]) = 2   <- WRONG, should be 5
-        //
+        // Commented out because they are the only -Wall noise in this file, and a
+        // clean build is worth more than a demo we've already run. Uncomment to see
+        // sizeof(arr)=8, sizeof(arr[0])=4, so the "length" comes out 2 instead of 5.
         // cout << "  sizeof(arr)               = " << sizeof(arr) << endl;
         // cout << "  sizeof(arr[0])            = " << sizeof(arr[0]) << endl;
         // cout << "  sizeof(arr)/sizeof(arr[0])= " << sizeof(arr) / sizeof(arr[0]) << endl;
@@ -148,8 +147,6 @@ using namespace std;
     }
 
     void partA_basics() {
-        // INFO: bare XXX: below is YOUR marker -- settled convention, see the
-        //       legend up top. Mine always carry a second word (XXX: THINK --).
         // XXX: A.1 C-style static array:
         cout << "A.1 C-style Static array functions: " << endl;
         int fixed[5] = {1, 2, 3, 4, 5};
@@ -271,12 +268,10 @@ using namespace std;
         cout << "2nd Element accessed via .at(), in the vector is: " << vectA4.at(1) << endl;
         cout << endl;
 
-        // Below code does NOT throw. operator[] has no bounds check at all, so
-        // out-of-range [] is undefined behaviour: garbage, segfault, or apparently
-        // fine. Uncommenting it only gets you a -Wall compile-time WARNING
-        // ("array subscript 4 is outside array bounds"), and that fires purely
-        // because the size is visible right here -- hide the index behind a
-        // variable and the warning disappears while the bug stays.
+        // Does NOT throw -- operator[] has no bounds check, so this is UB:
+        // garbage, segfault, or apparently fine. The -Wall warning you'd get only
+        // fires because the size is visible here; hide the index behind a variable
+        // and the warning goes but the bug stays.
         // WARN: TRAP -- "it warned me" is not "it checked for me".
         // cout << "Trying out: vectA4[vectA4.size()]: " << vectA4[vectA4.size()] << endl;
 
@@ -353,46 +348,244 @@ using namespace std;
         // 6. back:
         cout << "Back of the given numbers vector is: " << numbers.back() << "\n\n";
 
-       // 7. clear:
-       printArray(numbers, "Before clear was called on numbers: ");
-       cout << "Clearing the given numbers vector: "  << endl;
-       numbers.clear();
-       printArray(numbers, "After clear was called on numbers: ");
-       cout << "Size after clear: " << numbers.size() << "\nCapacity after clear: " << numbers.capacity() << endl;
-       cout << endl;
+        // 7. clear:
+        printArray(numbers, "Before clear was called on numbers: ");
+        cout << "Clearing the given numbers vector: "  << endl;
+        numbers.clear();
+        printArray(numbers, "After clear was called on numbers: ");
+        cout << "Size after clear: " << numbers.size() << "\nCapacity after clear: " << numbers.capacity() << endl;
+        // NOTE: INVARIANT -- clear() destroys the ELEMENTS, not the BUFFER.
+        //       Only shrink_to_fit() offers the memory back, and it may decline.
+        cout << endl;
 
-       // XXX: B.2  insert(pos, val) and erase(pos)   -- both O(n); demo at a middle index
-       // Operation 1:
-       cout << "B.2  insert(pos, val) and erase(pos)" << endl;
-       numbers = {1, 2, 3, 4, 5};
-       printArray(numbers, "numbers before insert on 3rd index: ");
-       numbers.insert(numbers.begin() + 3, 3);
-       printArray(numbers, "numbers after insert on 3rd index: ");
-       cout << endl;
+        // XXX: B.2  insert(pos, val) and erase(pos)   -- both O(n); demo at a middle index
+        // Operation 1:
+        cout << "B.2  insert(pos, val) and erase(pos)" << endl;
+        numbers = {1, 2, 3, 4, 5};
+        printArray(numbers, "numbers before insert on 3rd index: ");
+        // INFO: 99 not 3, so you can SEE 4 and 5 slide right. That slide is the O(n).
+        numbers.insert(numbers.begin() + 3, 99);
+        printArray(numbers, "numbers after insert on 3rd index: ");
+        cout << endl;
 
-       // Operation 2:
-       printArray(numbers, "numbers before erase on pos 3: ");
-       numbers.erase(numbers.begin() + 3);
-       printArray(numbers, "numbers after erase on pos 3: " );
-       cout << endl;
+        // Operation 2:
+        printArray(numbers, "numbers before erase on pos 3: ");
+        numbers.erase(numbers.begin() + 3);
+        printArray(numbers, "numbers after erase on pos 3: " );
+        cout << endl;
 
-       // XXX: B.3  resize vs reserve  -- one changes size, one only capacity. Which?
-       cout << "B.3  resize vs reserve" << endl;
-       // Operation 1: resize: changes the size and adds desired elements in the new spaces
-       printArray(numbers, "numbers before resize: ");
-       cout << "Size of numbers before resize: " << numbers.size() << "\nCapacity of numbers before resize: " << numbers.capacity() << "\n\n";
-       numbers.resize(10, 0);
-       printArray(numbers, "numbers after resize: ");
-       cout << "Size of numbers after resize: " << numbers.size() << "\nCapacity of numbers after resize: " << numbers.capacity() << "\n\n";
-       cout << endl;
+        // XXX: B.3  resize vs reserve  -- one changes size, one only capacity. Which?
+        cout << "B.3  resize vs reserve" << endl;
+        // Operation 1: resize: changes the size and adds desired elements in the new spaces
+        printArray(numbers, "numbers before resize: ");
+        cout << "Size of numbers before resize: " << numbers.size() << "\nCapacity of numbers before resize: " << numbers.capacity() << "\n\n";
+        numbers.resize(10, 0);
+        printArray(numbers, "numbers after resize: ");
+        cout << "Size of numbers after resize: " << numbers.size() << "\nCapacity of numbers after resize: " << numbers.capacity() << "\n\n";
+        // Shrinking using resize:
+        numbers.resize(7);
+        printArray(numbers, "numbers after shrinking resize(7): ");
+        // NOTE: INVARIANT -- resize moves size (growing capacity only if it must);
+        //       reserve moves capacity and never touches size.
+        cout << "Size of numbers after shrink: " << numbers.size() << "\nCapacity of numbers after shrink: " << numbers.capacity() << "\n\n";
+        cout << endl;
 
-       // Operation 2: reserve: changes the overall capacity
-       printArray(numbers, "numbers before reserve: ");
-       cout << "Size of numbers before reserver: " << numbers.size() << "\nCapacity of numbers before reserve: " << numbers.capacity() << "\n\n";
-       numbers.reserve(100);
-       printArray(numbers, "numbers after reserve: ");
-       cout << "Size of numbers after reserve: " << numbers.size() << "\nCapacity of numbers after reserve: " << numbers.capacity() << "\n\n";
-       cout << endl;
+        // Operation 2: reserve: changes the overall capacity
+        printArray(numbers, "numbers before reserve: ");
+        cout << "Size of numbers before reserve: " << numbers.size() << "\nCapacity of numbers before reserve: " << numbers.capacity() << "\n\n";
+        numbers.reserve(100);
+        printArray(numbers, "numbers after reserve: ");
+        cout << "Size of numbers after reserve: " << numbers.size() << "\nCapacity of numbers after reserve: " << numbers.capacity() << "\n\n";
+        cout << endl;
+
+        // XXX: B.4 CAPACITY & GROWTH
+        // INFO: capacity below goes 1,2,4,8,16 -- copies across n push_backs
+        //       total < 2n, i.e. O(n) spread over n calls = amortized O(1).
+        // Operation 1: Capacity jump:
+        cout << "B.4 CAPACITY & GROWTH" << endl;
+        vector<int> nums;
+        printArray(nums, "Initial elements in nums: ");
+        cout << "Initial size of nums: " << nums.size() << "\nInitial Capacity of nums: " << nums.capacity() << endl;
+        cout << endl;
+        for (int i=0 ; i<10 ; i++) {
+            nums.push_back(i);
+            string msg = "Content of nums on iteration: " + to_string(i);
+            printArray(nums, msg);
+            cout << "on iteration: " << i << "\nSize of nums: " << nums.size() << "\nCapacity of nums: " << nums.capacity();
+            cout << "\n\n";
+        }
+        cout << endl;
+
+        // Operation 2: iterator invalidation:
+        vector<int> nums2 = {10, 20, 30};
+        nums2.reserve(4);
+        // NOTE: INVARIANT -- the buffer moves if and only if a push_back would
+        //       make size exceed capacity. All vector invalidation follows from
+        //       that one rule. The two cases below are it with/without room.
+        // Case 1: size 3 in capacity 4 -- there IS room, so push_back must not move.
+        cout << "-- Case 1: room to spare --" << endl;
+        printArray(nums2, "Initial elements in nums2: ");
+        cout << "Size of nums2: " << nums2.size() << "\nCapacity of nums2: " << nums2.capacity();
+        cout << "\n\n";
+        auto oldAddress = &nums2[0];
+        nums2.push_back(50);
+        auto newAddress = &nums2[0];
+        // WARN: TRAP -- in Case 2, fullAddress dangles the instant the realloc
+        //       happens; even comparing it (not dereferencing) is formally
+        //       unspecified. capacity() before vs after is the clean tell.
+        cout << "Size is now " << nums2.size() << ", capacity still " << nums2.capacity() << endl;
+        cout << "Address changed: " << (oldAddress != newAddress) << endl;
+        cout << endl;
+
+        // Case 2: after Case 1, nums2 is size 4 in capacity 4 -- FULL. Same four
+        // lines, no reserve this time, so the next push_back has nowhere to go.
+        cout << "-- Case 2: already full --" << endl;
+        printArray(nums2, "Elements in nums2: ");
+        cout << "Size of nums2: " << nums2.size() << "\nCapacity of nums2: " << nums2.capacity();
+        cout << "\n\n";
+        auto fullAddress = &nums2[0];
+        nums2.push_back(60);
+        auto grownAddress = &nums2[0];
+        cout << "Size is now " << nums2.size() << ", capacity is now " << nums2.capacity() << endl;
+        cout << "Address changed: " << (fullAddress != grownAddress) << endl;
+        // INFO: the two results side by side ARE the lesson:
+        //         Case 1  room to spare -> capacity same   -> address same
+        //         Case 2  already full  -> capacity doubled -> address moved
+        //       Case 2 reallocated, so every pointer/iterator into the old
+        //       buffer (end() included) is dead. reserve(n) up front avoids it.
+        cout << endl;
+
+        // XXX: B.5  sort (ascending AND descending), reverse
+        cout << "B.5  sort (ascending AND descending), reverse" << endl;
+        vector<int> values = {10, 2, 1, 3, 7, 4, 1, 0};
+        printArray(values, "Initial values vector: ");
+        cout << endl;
+        // Operation 1:
+        sort(values.begin(), values.end());
+        printArray(values, "After ascending sort: ");
+        cout << endl;
+
+        // Operation 2:
+        sort(values.begin(), values.end(), greater<int>());
+        printArray(values, "After descending sort: ");
+        cout << endl;
+        // Operation 3:
+        // INFO: reversing the descending vector reproduces the ascending one --
+        //       same output, O(n) not O(n log n). Sort when you don't know the
+        //       order, reverse when you do. rbegin()/rend() is free.
+        reverse(values.begin(), values.end());
+        printArray(values, "After reverse: ");
+        cout << "\n\n";
+
+        // XXX: B.6 accumulate
+        vector<int> vect = {10, 20, 30, 40};
+        cout << "Result from accumulation 1: " << accumulate(vect.begin(), vect.end(), 0) << "\tof type: " << typeid(accumulate(vect.begin(), vect.end(), 0)).name() << endl;
+
+        // WARN: TRAP -- the init value picks the ACCUMULATOR TYPE: 0 is int,
+        //       0LL is long long. Same data, same call, one overflows. And that
+        //       overflow is signed UB, not defined wraparound (unsigned wraps).
+        vector<int> vect2 = {1'000'000'000, 1'000'000'000, 1'000'000'000, 1'000'000'000};
+        cout << "Result from accumulation 2: " << accumulate(vect2.begin(), vect2.end(), 0) << "\tof type: " << typeid(accumulate(vect2.begin(), vect2.end(), 0)).name() << endl;
+        cout << "Result from accumulation 2 with long long instead: " << accumulate(vect2.begin(), vect2.end(), 0LL) << "\tof type: " << typeid(accumulate(vect2.begin(), vect2.end(), 0LL)).name() << endl;
+        cout << endl;
+
+        // XXX: B.7  max_element / min_element
+        cout << "B.7  max_element / min_element" << endl;
+        auto maxElem = max_element(vect.begin(), vect.end());
+        // max_element returns an iterator hence we need to dereference it to extract it's value
+        cout << "Printing maxElem: " << *maxElem << endl;
+        auto minElem = min_element(vect.begin(), vect.end());
+        // Similarly min_elem returns and iterator too hence we need to dereference it
+        cout << "Printing minElem: " << *minElem << "\n\n";
+
+        // XXX: B.8  count, find
+        // Opearation 1:
+        cout << "B.8  count, find" << endl;
+        vector<int> temp = {10, 10, 20, 10, 30, 10, 40, 10, 50, 10};
+        auto count = std::count(temp.begin(), temp.end(), 10);
+        cout << "count of 10's in temp: " << count << "\n\n";
+
+        // Operation 2:
+        // INFO: 30 hits, 300 misses -- looping over both makes both branches print.
+        for (int target : {30, 300}) {
+            auto pos = std::find(temp.begin(), temp.end(), target);
+            if (pos != temp.end()) {
+                auto idx = std::distance(temp.begin(), pos);
+                cout << "Value " << target << " was found at index: " << idx << endl;
+            } else {
+                cout << "Value " << target << " not present in the given vector" << endl;
+            }
+        }
+        // NOTE: INVARIANT -- find returns end() on a miss; end() is not an
+        //       element. Test it BEFORE dereferencing or calling distance().
+        // WARN: TRAP -- find is O(n) regardless of sorting. If sorted, use
+        //       lower_bound (B.9) for the same answer in O(log n).
+        cout << endl;
+
+        // XXX: B.9  binary_search / lower_bound / upper_bound
+        cout << "B.9  binary_search / lower_bound / upper_bound" << endl;
+        // Operation 1: binary search
+        vector<int> tempVect = {2, 5, 1, 3, 6, 10, 2, 8};
+        sort(tempVect.begin(), tempVect.end());
+        for (int target : {6, 30}) {
+            bool isPresent = binary_search(tempVect.begin(), tempVect.end(), target);
+            cout << "Is " << target << " present in the vector: " << (isPresent ? "True" : "False") << endl;
+        }
+        // WARN: TRAP -- binary_search answers yes/no only, never where.
+        //       Need the position? lower_bound below, then check what it lands on.
+        cout << endl;
+
+        //Operation 2: lower_bound
+        auto itr = lower_bound(tempVect.begin(), tempVect.end(), 2);
+        auto idx = std::distance(tempVect.begin(), itr);
+        cout << "Lower bound for given element in the vector appears at: " << idx << endl;
+        cout << endl;
+
+        // Operation 3: upper_bound
+        auto upperItr = upper_bound(tempVect.begin(), tempVect.end(), 2);
+        auto upperIdx = std::distance(tempVect.begin(), upperItr);
+        cout << "Upper bound for given element in the vector appears at: " << upperIdx << endl;
+        cout << "occurrences of 2: " << upperIdx - idx << endl;
+        cout << endl;
+        // NOTE: INVARIANT -- on sorted input, [lower_bound(x), upper_bound(x))
+        //       is exactly the block equal to x -- empty if absent, and the
+        //       insert position either way. equal_range returns both at once.
+        // WARN: TRAP -- sorted input only. Unsorted doesn't error, it just lies.
+
+        // XXX: B.10 the dedupe idiom on a sorted vector: erase + unique
+        cout << "B.10 the dedupe idiom on a sorted vector: erase + unique" << endl;
+        vector<int> newVect = {10, 2, 3, 1, 7, 13, 8, 6, 1, 2, 6, 10};
+        printArray(newVect, "Initial newVect content: ");
+        cout <<endl;
+        sort(newVect.begin(), newVect.end());
+        printArray(newVect, "After sort: ");
+        cout << endl;
+        // deduping the given vector now:
+        // NOTE: INVARIANT -- unique() only removes ADJACENT duplicates. That's
+        //       why the sort has to come first; without it you dedupe nothing.
+        // XXX: Answer: I understand the concept I give you perms to make the code
+        // better in this case. doesn't really make much difference right now for me
+        // to invest more time. please complete it as you see fit
+
+        // Step 1: unique() compacts survivors to the front and returns the new
+        //         logical end. It only has an iterator pair -- no handle on the
+        //         vector -- so it CANNOT change size. Hence step 2.
+        auto newEnd = unique(newVect.begin(), newVect.end());
+        cout << "size after unique(), before erase(): " << newVect.size()
+             << "  <- unchanged, still 12" << endl;
+        cout << "unique() survivors: " << std::distance(newVect.begin(), newEnd) << endl;
+        printArray(newVect, "Whole vector after unique() -- note the junk tail: ");
+        // WARN: TRAP -- everything from newEnd to end() is valid but UNSPECIFIED.
+        //       It looks like plausible leftovers, so a glance at the front says
+        //       "it worked". Never read it.
+
+        // Step 2: erase() is what actually removes the tail and shrinks size.
+        newVect.erase(newEnd, newVect.end());
+        printArray(newVect, "After dedupe: ");
+        cout << "size after erase(): " << newVect.size() << endl;
+        // INFO: this two-step is the ERASE-REMOVE IDIOM -- same shape for
+        //       remove() and remove_if(). C++20 folds it into std::erase/erase_if.
+        cout << endl;
     }
 
 /* ==========================================================================
@@ -474,5 +667,6 @@ int main() {
     partA_basics();
     cout << "\n==============================================================\n\n\n";
     partB_operations();
+    cout << "\n==============================================================\n\n\n";
     return 0;
 }

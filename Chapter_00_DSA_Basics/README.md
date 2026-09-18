@@ -54,6 +54,7 @@ Chapter_XX_<Name>/
 | Date | Structure | Notes |
 | :-- | :-- | :-- |
 | 2026-09-17 | Arrays | `Patterns.md` written (11 patterns). `Arrays.cpp` + `Patterns.cpp` scaffolded, awaiting implementation. |
+| 2026-09-18 | Arrays | `Arrays.cpp` Parts A & B implemented (basics + the STL operations toolkit). Audited: builds clean under `-Wall -Wextra`, output correct. Audited, fixed, re-audited: Part B (B.1-B.10) now complete and building clean under `-Wall -Wextra`. Prateesh fixed B.3/B.5/B.9; on his request Claude wrote the B.4 two-case reallocation demo, the B.8/B.9 hit-and-miss lookups, and the B.10 `unique`/`erase` split. No `FIXME:` left in the file. Outstanding: the B.4 `THINK` answers (his to write). Parts C (passing to functions) and D (`DynamicArray`) not started. Parts C (passing to functions) and D (`DynamicArray`) not started. |
 
 ---
 
