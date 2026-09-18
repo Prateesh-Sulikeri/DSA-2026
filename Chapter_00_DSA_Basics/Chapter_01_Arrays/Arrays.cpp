@@ -6,6 +6,7 @@
 #include <iterator>
 #include <numeric>
 #include <ostream>
+#include <stdexcept>
 #include <string>
 #include <vector>
 using namespace std;
@@ -607,20 +608,30 @@ using namespace std;
    when you intend to mutate. By-value only when you deliberately want a copy.
    ========================================================================== */
 
+    // INFO: printing vect.data() was a good instinct -- data() is the address
+    //       of the underlying buffer, so byValue prints a DIFFERENT address (it
+    //       got its own copy) while byReference and constRef print the caller's.
+    //       That is the whole lesson of Part C in one line.
+    //       Two notes: (a) label it, a bare 0x5f3a... says nothing on its own;
+    //       (b) it only prints as an address because it is int*. A char* would
+    //       be printed as a C string instead -- same operator, different meaning.
     void byValue(vector<int> vect) {
         vect[0] = 999;
         printArray(vect, "Vect when printed inside byValue: ");
+        cout << vect.data() << endl;
     }
 
     void byReference(vector<int>& vect) {
         vect[0] = 999;
         printArray(vect, "Vect when printed inside byReference: ");
+        cout << vect.data() << endl;
     }
 
     void constRef(const vector<int>& vect) {
         // WARN: Would give me compilation issues
         //vect[0] = 999;
         printArray(vect, "Vect when printed inside constRef: ");
+        cout << vect.data() << endl;
     }
 
     void partC_passing() {
@@ -635,6 +646,7 @@ using namespace std;
         byReference(vect);
         printArray(vect, "After byReference: ");
         cout << endl;
+        vect[0] = 10;
         cout << "Passing to constant reference: " << endl;
         constRef(vect);
         printArray(vect, "After constRef: ");
@@ -689,6 +701,260 @@ using namespace std;
        know that the gap exists and why.
    ========================================================================== */
 
+    // NOTE: INVARIANT -- three things must hold at every point a caller can
+    //       observe this object:
+    //         1. data points to a buffer of exactly `cap` ints (never null)
+    //         2. 0 <= sz <= cap
+    //         3. data[0 .. sz-1] are the live elements; data[sz .. cap-1] is
+    //            raw, unspecified memory -- never read it, never print it
+    //       Every method below is a small transaction: it may break these in
+    //       the middle, but it must restore all three before it returns. Most
+    //       of the findings in this file are one of the three going unrestored.
+    class DynamicArray {
+        private:
+            int* data;
+            int sz;
+            int cap;
+        public:
+            // INFO: start at a small NON-ZERO capacity so the first push_back is
+            //       a plain write rather than an allocation. The 4 is arbitrary;
+            //       what matters is that it isn't 0. See the BUG below for why.
+            // INFO: neither ctor uses a member-init list:
+            //           DynamicArray() : data(new int[4]), sz(0), cap(4) {}
+            //       For plain ints this changes nothing at runtime, but it is the
+            //       idiom, and it becomes mandatory the moment a member is const,
+            //       a reference, or a type with no default constructor. Get in
+            //       the habit here where it's free.
+            DynamicArray() {
+                int initCap = 4;
+                data = new int[initCap] ;
+                sz = 0;
+                cap = initCap;
+            }
+
+            // INFO: this is the FILL constructor -- std::vector spells it
+            //       vector<int> v(n, val). Good instinct to add it.
+            // BUG: DynamicArray d(0, 7); leaves cap == 0. The next push_back does
+            //      increaseCapacity -> cap = 0 * 2 = 0 -> resize(0) -> and then
+            //      writes data[0] into a zero-length buffer. Confirmed under
+            //      -fsanitize=address:
+            //          heap-buffer-overflow ... WRITE of size 4 in push_back
+            //      Doubling has a fixed point at zero. Two decisions to make:
+            //      should cap == 0 be legal at all, and if it is, what must the
+            //      growth expression do about it?
+            // FIXME: this sz = 0 is dead -- you overwrite it with customCap five
+            //        lines down. One assignment, not two.
+            DynamicArray(int customCap, int val) {
+                data = new int[customCap];
+                sz = 0;
+                for (int i=0 ; i<customCap ; i++) {
+                    data[i] = val;
+                }
+                sz = customCap;
+                cap = customCap;
+            }
+
+            ~DynamicArray() {
+                delete[] data;
+            }
+
+            int size() const ;
+
+            int capacity() const ;
+
+            bool empty() const;
+
+            // FIXME: `currCap` is a dead parameter. Every call site passes `cap`
+            //        itself, so `currCap == cap` is always true and the guard
+            //        guards nothing. A parameter that can only ever hold one
+            //        value is not a parameter.
+            // FIXME: this also mixes POLICY with MECHANISM. The policy is "when
+            //        sz == cap, double"; the mechanism is resize(). Keep resize()
+            //        dumb and put the policy in the callers, or make this
+            //        `void grow()` taking nothing.
+            // XXX: THINK -- write the single growth expression that is correct
+            //      from cap == 4 AND from cap == 0. (This is the BUG above.)
+            void increaseCapacity(int currCap) {
+                if (currCap == cap) {
+                    cap *= 2;
+                }
+                resize(cap);
+            }
+
+            // NOTE: INVARIANT -- the order here is the whole exercise: allocate,
+            //       copy, THEN delete, THEN repoint. Delete before the copy and
+            //       you read freed memory; repoint before the copy and you copy a
+            //       buffer onto itself. You got this order right.
+            // WARN: TRAP -- resize() is public and will happily SHRINK. resize(1)
+            //       on a size-9 array sets cap = 1 while sz stays 9, so invariant
+            //       #2 (sz <= cap) is dead and every read past index 0 is out of
+            //       bounds. The scaffold put this under `private:` for exactly
+            //       that reason. Move it back, or make it refuse newCap < sz.
+            void resize(int newCap) {
+                int* newData = new int[newCap];
+
+                for (int i=0 ; i<sz ; i++) {
+                    newData[i] = data[i];
+                }
+
+                delete[] data;
+                data = newData;
+                cap = newCap;
+            }
+
+            // INFO: amortized O(1). Almost every call is one write; one call in
+            //       every `cap` pays for an O(n) copy. Because cap DOUBLES, the
+            //       copies across n pushes total 1 + 2 + 4 + ... + n < 2n, so the
+            //       average per push is a constant. Grow by +1 instead and that
+            //       sum is 1 + 2 + ... + n = O(n^2). That is the entire argument
+            //       for doubling, and it's the answer to the scaffold's question.
+            // FIXME: both branches end in the same two lines. Grow first if you
+            //        need to, then write once. Duplicated tails are where a later
+            //        edit fixes one branch and quietly forgets the other.
+            void push_back(int val) {
+                if (sz < cap) {
+                    data[sz] = val;
+                    sz++;
+                }
+                else {
+                    increaseCapacity(cap);
+                    data[sz] = val;
+                    sz++;
+                }
+            }
+
+            // INFO: O(1), and shrinking LOGICALLY (sz-- only) is the right call.
+            //       You deliberately do not free memory, so a push_back that
+            //       follows costs nothing. std::vector does the same -- which is
+            //       why shrink_to_fit() has to exist as a separate request.
+            // WARN: TRAP -- data[sz] still holds the old value after this returns.
+            //       It is not cleared; it is simply no longer yours to read. A
+            //       print loop bounded by cap instead of sz will show it to you
+            //       and it will look plausible.
+            void pop_back() {
+                if (sz == 0) {
+                    return;
+                }
+                sz -=1 ;
+            }
+
+            // INFO: returning int& rather than int is what makes
+            //           dArr.at(1) = 99;
+            //       legal -- the caller gets a handle on the element itself, not
+            //       a copy of its value. That's the scaffold's question answered.
+            // FIXME: no const overload. A function taking `const DynamicArray&`
+            //        cannot call at() at all right now. The pair you want is:
+            //            int&       at(int index);
+            //            const int& at(int index) const;
+            // WARN: TRAP -- the returned reference dies the moment the buffer
+            //       moves. Hold `int& r = dArr.at(0);`, push past capacity, and r
+            //       dangles. This is precisely what "iterators and references are
+            //       invalidated on reallocation" means in the std::vector docs.
+            int& at(int index) {
+                if (index < 0 || index >= sz) {
+                    throw out_of_range("DynamicArray index out of range");
+                }
+
+                return data[index];
+            }
+
+            // FIXME: the delete[] / new[] pair buys nothing. sz = 0 on its own
+            //        already satisfies all three invariants -- everything past sz
+            //        is *defined* as garbage. You are paying for an allocation in
+            //        order to produce garbage you were entitled to for free.
+            // WARN: TRAP -- worse, it isn't exception safe. If that `new` throws,
+            //       `data` has already been deleted and still points at freed
+            //       memory, so the destructor frees it a second time. Never leave
+            //       an owning member dangling between two statements that can throw.
+            void clear() {
+                delete[] data;
+                data = new int[cap];
+                sz = 0;
+            }
+
+            // NOTE: INVARIANT -- index == sz is LEGAL here, because inserting at
+            //       the end is an append. That is why this bound is `> sz` while
+            //       erase()'s is `>= sz`. They genuinely differ and you got both
+            //       right -- make sure you can say why out loud.
+            // INFO: O(n). The shift is the cost, and it walks BACKWARD from the
+            //       last element so every write lands in a slot already copied.
+            //       Forward would smear data[index] across the whole tail.
+            // WARN: TRAP -- when sz == cap this grows the buffer, so any pointer
+            //       or reference the caller was holding from at() now dangles.
+            void insert(int index, int val) {
+                if (index < 0 || index > sz) {
+                    throw out_of_range("DynamicArray index out of range");
+                }
+                if (sz == cap) {
+                    increaseCapacity(cap);
+                }
+                // [0, 1, 2, 3, 4] index 3 val 3
+                for (int idx = (sz - 1) ; idx>=index ; idx--) {
+                    data[idx+1] = data[idx];
+                }
+                sz++;
+                data[index] = val;
+            }
+
+            // INFO: O(n). Shift LEFT, and forward this time, for the mirror
+            //       reason. The loop stops at sz-2 so data[idx+1] never reads past
+            //       the last live element -- an off-by-one here is the classic way
+            //       to read one slot of garbage into your array.
+            void erase(int index) {
+                if (index < 0 || index >= sz) {
+                    throw out_of_range("DynamicArray index out of range");
+                }
+
+                for (int idx = index ; idx < sz - 1 ; idx++) {
+                    data[idx] = data[idx+1];
+                }
+                sz--;
+            }
+
+            // FIXME: not const -- the scaffold asked for `void print() const`.
+            //        As written, a `const DynamicArray&` cannot print itself, so
+            //        print() is unusable from any read-only function. Same fix
+            //        as size()/capacity()/empty(), which you did mark const.
+            // INFO: the loop bound is sz, not cap -- correct. Printing to cap
+            //       would dump the raw tail, which is how invariant #3 usually
+            //       announces itself: "weird numbers at the end of my array".
+            void print() {
+                cout << "[";
+                for (int i=0 ; i < sz ; i++) {
+                    cout << data[i];
+                    if (i+1 != sz) {
+                        cout << ", ";
+                    }
+                }
+                cout << "]" << endl;
+            }
+    };
+
+    int DynamicArray::size() const {
+        return sz;
+    }
+
+    int DynamicArray::capacity() const {
+        return cap;
+    }
+
+    // FIXME: `if (sz == 0) return true; return false;` is `return sz == 0;`
+    //        -- the condition already IS the bool you're building.
+    bool DynamicArray::empty() const {
+        if (sz == 0) return true;
+        return false;
+    }
+
+    // WARN: TRAP -- RULE OF THREE, still open. This class owns a raw pointer and
+    //       declares a destructor, but no copy constructor and no copy
+    //       assignment. So the compiler writes them for you, memberwise:
+    //           DynamicArray b = a;     // b.data == a.data -- the SAME buffer
+    //       and when both destructors run, one address is freed twice. Passing
+    //       one of these BY VALUE does it silently -- which is exactly why Part C
+    //       sits on the page before this one.
+    //       You don't have to fix it today, but this file is not finished until
+    //       you do: destructor, copy ctor, copy assignment -- declare all three
+    //       or none. (Modern spelling: Rule of Five, adding the two moves.)
 
 /* ==========================================================================
    MAIN
@@ -702,5 +968,84 @@ int main() {
     partB_operations();
     cout << "\n==============================================================\n\n\n";
     partC_passing();
+    cout << "\n==============================================================\n\n\n";
+
+
+    /* ----------------------------------------------------------------------
+       INFO: PART D DEMO -- what the output has to prove
+
+       FIXME: the demo below calls the methods but doesn't SHOW anything. Two
+              problems, and both are about the reader rather than the code:
+
+         1. Bare values. `cout << dArr.size()` prints "3". Three what? Every
+            line needs to say what it is, and where it matters, what you
+            expected of it:
+                size after 3 push_backs: 3   (expected 3)
+                capacity:                4   (expected 4 -- no growth yet)
+
+         2. It never crosses a capacity boundary. You push 3 elements into a
+            capacity of 4, so cap prints 4, then 4, then 4, and the doubling --
+            the ONE idea Part D exists to teach -- never happens on screen.
+
+       TODO: rewrite the demo so every block prints size AND capacity with a
+             label, and so it covers:
+
+               D.1  growth       push 1..9 in a loop, printing sz and cap after
+                                 EACH push. The reader should watch cap go
+                                 4, 4, 4, 4, 8, 8, 8, 8, 16 and be able to point
+                                 at the two pushes that paid for a copy.
+               D.2  at() reads   and then WRITES through it: dArr.at(1) = 99;
+                                 print before and after -- that's the int&.
+               D.3  at() throws  wrap a bad index in try/catch and print
+                                 e.what(). An exception you never trigger is
+                                 untested code.
+               D.4  insert       at the FRONT (index 0), printing before and
+                                 after so the shift is visible. Index 2 of a
+                                 2-element array is just an append -- it proves
+                                 nothing about shifting.
+               D.5  erase        from the MIDDLE, same before/after.
+               D.6  pop_back     on an empty array -- prove it returns quietly
+                                 instead of driving sz negative.
+               D.7  empty()      print it when it's true AND when it's false.
+                                 (boolalpha is already on from Part A, so it
+                                 prints true/false, not 1/0.)
+
+       XXX: THINK -- a good demo reads like an argument: claim, evidence,
+            verdict. Before writing each print, finish the sentence "this line
+            proves that ___". If you can't finish it, the line is noise.
+
+       XXX: THINK -- the four questions in the PART D header above are still
+            unanswered. D.1's output is the evidence for the doubling one; write
+            your answers back as `XXX: Answer:` lines under each question.
+       ---------------------------------------------------------------------- */
+
+    DynamicArray dArr;
+    dArr.push_back(10);
+    dArr.push_back(20);
+    dArr.push_back(30);
+    dArr.print();
+    cout << dArr.size() <<  endl;
+    cout << dArr.capacity() << endl;
+    cout << endl;
+
+    cout << dArr.at(1) << endl;
+    cout << endl;
+
+    dArr.pop_back();
+    dArr.print();
+    cout << dArr.size() <<  endl;
+    cout << dArr.capacity() << endl;
+    cout << endl;
+
+    cout << dArr.empty() << endl;
+    cout << endl;
+
+    dArr.insert(2, 25);
+    dArr.print();
+    cout << endl;
+
+    dArr.erase(2);
+    dArr.print();
+    cout << endl;
     return 0;
 }
