@@ -1,14 +1,4 @@
-#include <algorithm>
 #include <bits/stdc++.h>
-#include <cstddef>
-#include <functional>
-#include <ios>
-#include <iterator>
-#include <numeric>
-#include <ostream>
-#include <stdexcept>
-#include <string>
-#include <vector>
 using namespace std;
 
 /*
