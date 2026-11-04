@@ -36,3 +36,8 @@ Desktop.ini
 # ----------------------------
 *.tmp
 *.temp
+
+# ----------------------------
+# Generated PDFs (rebuilt from the notes)
+# ----------------------------
+**/pdfs/

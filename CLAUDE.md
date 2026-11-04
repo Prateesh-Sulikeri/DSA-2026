@@ -9,9 +9,39 @@ Every rule below serves both goals. All the important information is in the note
 ## Structure: one file per pattern
 
 - Each pattern gets **one file**, and the problems for that pattern go inside it as sections.
-- File names: `NN - Pattern Name.md`. `NN` is the study order (for example `03 - Sliding Window.md`).
-- `00 - Index.md` is the hub. It links every pattern and has a "Which pattern?" lookup table.
-- If one problem's write-up gets too long for its pattern file (more than about 60 lines), move it to `Problems/<Problem Name>.md` and link it from the pattern file with a short entry.
+- **One folder per pattern**, named `NN - Pattern Name/`. `NN` is the study order. Everything for that pattern lives inside it:
+  ```
+  📊 DSA/
+  ├── CLAUDE.md
+  ├── 00 - Master Index.md         ← tracks ALL patterns
+  ├── 01 - Arrays & Hashing/
+  │   ├── 00 - Index.md            ← index for this pattern only
+  │   ├── notes/01 - Arrays & Hashing.md
+  │   ├── code/<ProblemName>.java
+  │   └── pdfs/<Section>_Cheat_Sheet.pdf · _Revision_Sheet.pdf · _Detailed_Notes.pdf
+  └── 02 - Two Pointers/
+      ├── 00 - Index.md
+      ├── notes/02 - Two Pointers.md
+      ├── code/
+      └── pdfs/
+  ```
+- Pattern file: `NN - Pattern Name/notes/NN - Pattern Name.md` (for example `03 - Sliding Window/notes/03 - Sliding Window.md`).
+- `pdfs/` folders are git-ignored (generated output). Everything else is checked in.
+
+### Two indexes
+- **`00 - Master Index.md`** (DSA root) tracks progress across all patterns:
+  - **Progress:** one row per pattern from the suggested order: status, problem count, and ✅ / ⚠️ / ❌ counts, plus a Total row.
+  - **Which pattern?:** the cross-pattern signal → pattern lookup.
+  - **Redo queue:** every ❌ and ⚠️ problem, worst first.
+  - **All problems:** every problem, with its pattern.
+- **`NN - Pattern Name/00 - Index.md`** is the index for one pattern:
+  - a back-link to the master index,
+  - links to the notes, the practice code and the PDFs,
+  - **Which technique?:** the signals inside this pattern,
+  - **Problems:** with the practice file name, plus totals.
+- Every pattern index has the same file name, so link to it with its path: `[[NN - Pattern Name/00 - Index|index]]`.
+- Keep the two indexes in sync. The counts, confidence and redo queue in the master index must match the pattern indexes.
+- If one problem's write-up gets too long for its pattern file (more than about 60 lines), move it to `NN - Pattern Name/notes/Problems/<Problem Name>.md` and link it from the pattern file with a short entry.
 - A problem that fits several patterns goes under its **main** pattern. The others get a single-line link to it under **Related**.
 
 ### Suggested pattern order
@@ -90,6 +120,7 @@ Each problem inside the `## Problems` section looks like this:
 - **Brute → Optimal:** O(n³) check every substring → O(n) window + set.
 - **Complexity:** O(n) time · O(min(n, charset)) space
 - **Edge cases:** empty string, all the same character, all unique.
+- **Practice:** `<pattern folder>/code/<ProblemName>.java` · run: `java <ProblemName>.java` from that folder (or F5 in Zed)
 
 > [!example]- Code (Java)
 > ```java
@@ -126,11 +157,24 @@ The notes have three reading depths. They line up with the `handwritten-notes-pd
 
 So the TL;DR, Rule and Key insight lines must make sense **on their own**, without the rest of the note.
 
+### PDF output
+- Save the three PDFs of a pattern in `<pattern folder>/pdfs/`, named `<Section>_Cheat_Sheet.pdf`, `<Section>_Revision_Sheet.pdf`, `<Section>_Detailed_Notes.pdf`.
+- Build from that pattern's `notes/` only; never mix several patterns into one PDF set.
+- **Detailed Notes = a visual study guide**, hand-written by Claude, never the markdown re-typeset. For each problem: the question with an example → intuition (drawn) → why it works → a step-by-step trace table on an input that hits the tricky case → brute → optimal → code → mistakes and edge cases → ★ Rule.
+- **Cheat Sheet = recall + self-test**, in this order: signal → move table, one line per problem with its key idea, a tiny trace per algorithm, the 3–6 core code lines, a ☐ mistakes checklist, then **Test yourself** questions with the answers on a separate last page. Full sentences, never shortened wording.
+- Check every trace and answer by running it before it goes on the page.
+
 ## Instructions for Claude
 
 When I ask you to add a problem or a pattern:
-1. Work out the problem's main pattern and add it to that pattern file. Create the file from the template if it doesn't exist yet, and add it to `00 - Index.md`.
+1. Work out the problem's main pattern and add it to that pattern's `notes/` file. If the pattern is new, create `NN - Pattern Name/` with `notes/`, `code/`, `pdfs/` and a `00 - Index.md` (copy the shape of `01 - Arrays & Hashing/00 - Index.md`), create the note from the template, and link the pattern in the master index's **Progress** table.
 2. Insert the problem in difficulty order (easy → hard) and follow the problem block template exactly.
+2a. Also create the runnable practice file `<pattern folder>/code/<ProblemName>.java`: a `public class <ProblemName>` whose FIRST member is `static class Solution` (empty stub, `return -1; // TODO`) under a `// ===== SOLUTION =====` header, then `main` + test cases (examples + the Edge cases) under `// ===== TESTS =====`. Solution goes on top so it's what you see first; it must be nested because `java File.java` runs the first top-level class. Self-contained, with `check`/`done` helpers (copy from `01 - Arrays & Hashing/code/MajorityElement.java`), ASCII `PASS`/`FAIL` output. The answer goes only in the note's collapsed Code callout, never in the practice file. Run the stub (must fail) and the reference (must pass) before finishing.
+2b. Add the problem to **both indexes**:
+  - **Pattern index** (`NN - Pattern Name/00 - Index.md`): add a row in **Problems** and update the totals. If the problem brings a new signal, add a row in **Which technique?**.
+  - **Master index** (`00 - Master Index.md`): add a row in **All problems**, update that pattern's counts and the Total in **Progress**, and add it to the **Redo queue** if it is ❌ or ⚠️. If it is a new cross-pattern signal, add a row in **Which pattern?**.
+  - Link straight to the problem heading with `[[NN - Pattern#<exact heading text>\|Short name]]`, never just to the file.
+  - When a confidence changes on a revision pass, update it in both indexes and in the redo queue.
 3. If the problem introduces a new variant or pitfall, also update **Variants**, **Pitfalls** or **Recognition Signals** in that pattern file.
 4. Set `last_revised` in the frontmatter to today's date whenever the file meaningfully changes.
 5. Don't rewrite my own wording in notes I've already written unless I ask. Point out mistakes instead of silently "fixing" them.
