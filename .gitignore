@@ -1,57 +1,38 @@
 # ----------------------------
-# Build / Binaries
+# Java build output
 # ----------------------------
+*.class
+*.jar
+out/
 bin/
-*.exe
-*.out
-*.o
-*.obj
+target/
+build/
 
 # ----------------------------
-# Debug / Logs
+# IDE (IntelliJ / VS Code / Eclipse)
+# ----------------------------
+.idea/
+*.iml
+.vscode/
+.classpath
+.project
+.settings/
+
+# ----------------------------
+# Logs / crash dumps
 # ----------------------------
 *.log
+hs_err_pid*
 
 # ----------------------------
-# VS Code (local settings)
-# ----------------------------
-.vscode/
-
-# If you WANT to keep tasks.json, use instead:
-# .vscode/*
-# !.vscode/tasks.json
-
-# ----------------------------
-# OS Files (Windows)
+# OS files
 # ----------------------------
 Thumbs.db
 Desktop.ini
+.DS_Store
 
 # ----------------------------
 # Misc
 # ----------------------------
 *.tmp
 *.temp
-
-# C++ compiled binaries
-*.exe
-*.out
-*.app
-
-# Object files
-*.o
-*.obj
-
-# Static / dynamic libs
-*.a
-*.lib
-*.so
-*.dll
-*.dylib
-
-# Debug / build artifacts
-*.pdb
-*.ilk
-
-# Your bin folder
-bin/
