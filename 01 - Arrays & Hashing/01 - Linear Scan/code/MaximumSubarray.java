@@ -1,5 +1,5 @@
 // LC 53 · Maximum Subarray (Kadane's Algorithm) · Medium
-// Run: java MaximumSubarray.java   (or F5 in Zed)
+// Run: java MaximumSubarray.java   (from "01 - Arrays & Hashing/01 - Linear Scan/code/")
 
 public class MaximumSubarray {
     // ===== SOLUTION =====

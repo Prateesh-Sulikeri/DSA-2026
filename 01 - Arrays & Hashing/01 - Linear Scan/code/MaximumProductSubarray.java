@@ -1,5 +1,5 @@
 // LC 152 · Maximum Product Subarray · Medium
-// Run: java MaximumProductSubarray.java   (or F5 in Zed)
+// Run: java MaximumProductSubarray.java   (from "01 - Arrays & Hashing/01 - Linear Scan/code/")
 
 public class MaximumProductSubarray {
     // ===== SOLUTION =====

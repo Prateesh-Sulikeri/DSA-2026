@@ -1,5 +1,5 @@
 // LC 229 · Majority Element II · Medium
-// Run: java MajorityElementII.java   (or F5 in Zed)
+// Run: java MajorityElementII.java   (from "01 - Arrays & Hashing/01 - Linear Scan/code/")
 
 import java.util.*;
 

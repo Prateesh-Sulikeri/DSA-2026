@@ -1,5 +1,5 @@
 // LC 169 · Majority Element · Easy
-// Run: java "code/01 - Arrays & Hashing/MajorityElement.java"
+// Run: java MajorityElement.java   (from "01 - Arrays & Hashing/01 - Linear Scan/code/")
 
 import java.util.HashMap;
 import java.util.Map;
