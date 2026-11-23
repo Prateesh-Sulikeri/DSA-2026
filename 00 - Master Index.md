@@ -1,6 +1,6 @@
 ---
 tags: [dsa, index, index/master]
-last_revised: 2026-11-20
+last_revised: 2026-11-23
 ---
 
 # DSA Master Index
@@ -10,10 +10,10 @@ Tracks progress **across all patterns**. Each pattern folder has its own `00 - I
 ## Progress
 | # | Pattern | Pattern index | Status | Problems | ✅ | ⚠️ | ❌ |
 |---|---------|---------------|--------|----------|----|----|----|
-| 01 | Arrays & Hashing | [[01 - Arrays & Hashing/00 - Index\|index]] | learning | 23 | 15 | 4 | 4 |
+| 01 | Arrays & Hashing | [[01 - Arrays & Hashing/00 - Index\|index]] | learning | 26 | 18 | 4 | 4 |
 | ↳ 01.1 | [[01 - Linear Scan]] | | learning | 5 | 1 | 1 | 3 |
-| ↳ 01.2 | [[02 - Two Pointers]] | | learning | 15 | 11 | 3 | 1 |
-| ↳ 01.3 | [[03 - Hashing]] | | learning | 3 | 3 | 0 | 0 |
+| ↳ 01.2 | [[02 - Two Pointers]] | | learning | 15 | 12 | 2 | 1 |
+| ↳ 01.3 | [[03 - Hashing]] | | learning | 6 | 5 | 1 | 0 |
 | 02 | Sliding Window | – | not started | 0 | | | |
 | 03 | Prefix Sum | – | not started | 0 | | | |
 | 04 | Binary Search | – | not started | 0 | | | |
@@ -36,7 +36,7 @@ Tracks progress **across all patterns**. Each pattern folder has its own `00 - I
 | 21 | 1-D DP | – | not started | 0 | | | |
 | 22 | 2-D DP | – | not started | 0 | | | |
 | 23 | Advanced (Segment Tree, etc.) | – | not started | 0 | | | |
-| | **Total** | | | **23** | **15** | **4** | **4** |
+| | **Total** | | | **26** | **18** | **4** | **4** |
 
 ## Which pattern?
 The first thing to check when you read a new problem.
@@ -44,6 +44,7 @@ The first thing to check when you read a new problem.
 | Signal in the problem | Pattern → technique |
 |-----------------------|---------------------|
 | Element appearing > n/2 times, O(1) space | [[01 - Linear Scan]] → Boyer-Moore |
+| Element appearing > n/2 times, O(n) space is fine | [[03 - Hashing]] → frequency map, early exit |
 | Elements appearing > n/3 (or n/k) times | [[01 - Linear Scan]] → Boyer-Moore, 2 candidates + verify |
 | Max / min sum of contiguous subarray | [[01 - Linear Scan]] → Kadane |
 | Max product of contiguous subarray (negatives flip sign) | [[01 - Linear Scan]] → Kadane, max + min |
@@ -51,6 +52,8 @@ The first thing to check when you read a new problem.
 | Count / presence / duplicates | [[01 - Linear Scan]] → HashMap / HashSet |
 | Does any value appear twice? | [[03 - Hashing]] → HashSet seen-set |
 | Same letters rearranged (anagram) | [[03 - Hashing]] → letter count `int[26]` |
+| Group items sharing a canonical form (anagrams) | [[03 - Hashing]] → HashMap key → list |
+| Top k most frequent values | [[03 - Hashing]] → count map + bucket by frequency (or a size-k heap, Heap 10) |
 | Count subarrays with sum = k | Prefix Sum + HashMap (03, not started) |
 | Sorted array, pair / triplet with sum = target | [[02 - Two Pointers]] → opposite ends |
 | Remove / move / partition in place | [[02 - Two Pointers]] → slow / fast |
@@ -75,8 +78,8 @@ Problems marked ❌ or ⚠️, worst first. Clear a row when it reaches ✅.
 | ❌ | 152 | [[01 - Linear Scan#LC 152 · Maximum Product Subarray · 🟡 Medium\|Maximum Product Subarray]] | 01.1 |
 | ❌ | 31 | [[02 - Two Pointers#LC 31 · Next Permutation · 🟡 Medium\|Next Permutation]] | 01.2 |
 | ⚠️ | 881 | [[02 - Two Pointers#LC 881 · Boats to Save People · 🟡 Medium\|Boats to Save People]] | 01.2 |
-| ⚠️ | 42 | [[02 - Two Pointers#LC 42 · Trapping Rain Water · 🔴 Hard\|Trapping Rain Water]] | 01.2 |
 | ⚠️ | 169 | [[01 - Linear Scan#LC 169 · Majority Element · 🟢 Easy\|Majority Element]] | 01.1 |
+| ⚠️ | 347 | [[03 - Hashing#LC 347 · Top K Frequent Elements · 🟡 Medium\|Top K Frequent Elements]] | 01.3 |
 | ⚠️ | 80 | [[02 - Two Pointers#LC 80 · Remove Duplicates from Sorted Array II · 🟡 Medium\|Remove Duplicates from Sorted Array II]] | 01.2 |
 
 ## All problems
@@ -101,7 +104,10 @@ Problems marked ❌ or ⚠️, worst first. Clear a row when it reaches ✅.
 | 1 | [[02 - Two Pointers#LC 1 · Two Sum (Sort + Two Pointers) · 🟢 Easy\|Two Sum (Sort + Two Pointers)]] | 01.2 Arrays › Two Pointers | Sort (value, index) pairs + opposite ends | 🟢 | ✅ |
 | 881 | [[02 - Two Pointers#LC 881 · Boats to Save People · 🟡 Medium\|Boats to Save People]] | 01.2 Arrays › Two Pointers | Sort, heaviest + lightest | 🟡 | ⚠️ |
 | 31 | [[02 - Two Pointers#LC 31 · Next Permutation · 🟡 Medium\|Next Permutation]] | 01.2 Arrays › Two Pointers | Pivot, swap, reverse suffix | 🟡 | ❌ |
-| 42 | [[02 - Two Pointers#LC 42 · Trapping Rain Water · 🔴 Hard\|Trapping Rain Water]] | 01.2 Arrays › Two Pointers | Opposite ends, running max | 🔴 | ⚠️ |
+| 42 | [[02 - Two Pointers#LC 42 · Trapping Rain Water · 🔴 Hard\|Trapping Rain Water]] | 01.2 Arrays › Two Pointers | Opposite ends, running max | 🔴 | ✅ |
 | 217 | [[03 - Hashing#LC 217 · Contains Duplicate · 🟢 Easy\|Contains Duplicate]] | 01.3 Arrays › Hashing | HashSet seen-set | 🟢 | ✅ |
 | 242 | [[03 - Hashing#LC 242 · Valid Anagram · 🟢 Easy\|Valid Anagram]] | 01.3 Arrays › Hashing | Letter count `int[26]` | 🟢 | ✅ |
 | 1 | [[03 - Hashing#LC 1 · Two Sum (HashMap) · 🟢 Easy\|Two Sum (HashMap)]] | 01.3 Arrays › Hashing | HashMap complement | 🟢 | ✅ |
+| 169 | [[03 - Hashing#LC 169 · Majority Element (HashMap) · 🟢 Easy\|Majority Element (HashMap)]] | 01.3 Arrays › Hashing | Frequency map, early exit | 🟢 | ✅ |
+| 49 | [[03 - Hashing#LC 49 · Group Anagrams · 🟡 Medium\|Group Anagrams]] | 01.3 Arrays › Hashing | Group by key (sorted word) | 🟡 | ✅ |
+| 347 | [[03 - Hashing#LC 347 · Top K Frequent Elements · 🟡 Medium\|Top K Frequent Elements]] | 01.3 Arrays › Hashing | Count map + bucket by frequency | 🟡 | ⚠️ |

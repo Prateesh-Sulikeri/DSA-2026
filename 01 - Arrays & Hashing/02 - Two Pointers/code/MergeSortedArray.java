@@ -21,8 +21,10 @@ public class MergeSortedArray {
                     j--;
                 }
                 k--;
-            }
+            } // TC: O(m + n), m = valid length of nums1, n = length of nums2; one element placed per step, at most m + n steps
         }
+        // TC: O(m + n)   (worst case: every nums1 element is larger, so all m move before nums2 runs out)
+        // SC: O(1)
     }
 
     // ===== TESTS =====

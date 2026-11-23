@@ -8,7 +8,7 @@ public class BoatsToSavePeople {
     static class Solution {
         public int numRescueBoats(int[] people, int limit) {
 
-            Arrays.sort(people);
+            Arrays.sort(people); // TC: O(n log n); SC: O(log n) sort stack
             int boats = 0;
 
             int left = 0;
@@ -20,9 +20,11 @@ public class BoatsToSavePeople {
 
                 right--;
                 boats++;
-            }
+            } // TC: O(n) each iteration shrinks right, left only moves forward
             return boats;
         }
+        // TC: O(n log n) sorting dominates
+        // SC: O(log n)
     }
 
     // ===== TESTS =====

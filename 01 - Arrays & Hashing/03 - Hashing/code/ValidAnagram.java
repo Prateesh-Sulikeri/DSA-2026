@@ -7,38 +7,45 @@ public class ValidAnagram {
     // ===== SOLUTION =====
     static class Solution {
         // Approach 1: sort both strings, then compare
+        // n = length of s (and t)
         public boolean isAnagramSort(String s, String t) {
             if (s.length() != t.length())
                 return false;
 
-            char[] sArr = s.toCharArray();
-            char[] tArr = t.toCharArray();
+            char[] sArr = s.toCharArray(); // SC: O(n)
+            char[] tArr = t.toCharArray(); // SC: O(n)
 
-            Arrays.sort(sArr);
-            Arrays.sort(tArr);
+            Arrays.sort(sArr); // TC: O(n log n)
+            Arrays.sort(tArr); // TC: O(n log n)
 
-            return Arrays.equals(sArr, tArr);
-        }
+            return Arrays.equals(sArr, tArr); // TC: O(n)
+        } // TC: O(n log n) + O(n log n) + O(n) -> O(n log n) && SC: O(n) + O(n) -> O(n)
+
+        // TC: O(n log n)
+        // SC: O(n)
 
         // Approach 2: count array (int[26])
         public boolean isAnagramCount(String s, String t) {
             if (s.length() != t.length())
                 return false;
 
-            int[] charArr = new int[26];
+            int[] charArr = new int[26]; // SC: O(1)
 
             for (int i=0 ; i<s.length() ; i++) {
                 charArr[s.charAt(i) - 'a']++;
                 charArr[t.charAt(i) - 'a']--;
-            }
+            } // TC: O(n)
 
             for (int count : charArr) {
                 if (count != 0)
                     return false;
-            }
+            } // TC: O(26) -> O(1)
 
             return true;
-        }
+        } // TC: O(n) + O(1) -> O(n) && SC: O(1)
+
+        // TC: O(n)
+        // SC: O(1)
     }
 
     // ===== TESTS =====

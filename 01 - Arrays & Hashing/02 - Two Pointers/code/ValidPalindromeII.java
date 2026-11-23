@@ -18,10 +18,12 @@ public class ValidPalindromeII {
                         return true;
                     else
                         return false;
-                }
+                } // TC: O(n) outer scan, plus at most 2 isPalindrome calls (only once, on first mismatch) × O(n)
             }
             return true;
         }
+        // TC: O(n) + 2 × O(n) -> O(n)
+        // SC: O(1)
 
 
         private boolean isPalindrome(String s, int i, int j) {
@@ -32,9 +34,11 @@ public class ValidPalindromeII {
                 }
                 else
                     return false;
-            }
+            } // TC: O(n) i and j move inward
             return true;
         }
+        // TC: O(n)
+        // SC: O(1)
     }
 
     // ===== TESTS =====

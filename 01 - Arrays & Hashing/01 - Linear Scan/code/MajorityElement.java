@@ -8,7 +8,7 @@ public class MajorityElement {
     // ===== SOLUTION =====
     static class Solution {
         public int majorityElement(int[] nums) {
-            Map<Integer, Integer> freqMap = new HashMap<>();
+            Map<Integer, Integer> freqMap = new HashMap<>(); // SC: O(m), m = number of distinct values
 
             for (int n : nums) {
                 int freq = freqMap.getOrDefault(n, 0) + 1 ;
@@ -16,9 +16,11 @@ public class MajorityElement {
 
                 if (freq > nums.length / 2)
                     return n;
-            }
+            } // TC: O(n)
             return 0;
         }
+        // TC: O(n)
+        // SC: O(m)
 
         public int majorityElement2(int[] nums) {
              int candidate = 0, count = 0;
@@ -27,9 +29,11 @@ public class MajorityElement {
                  if (count == 0 ) candidate = n;
 
                  count += (n == candidate) ? 1 : -1;
-             }
+             } // TC: O(n)
              return candidate;
         }
+        // TC: O(n)
+        // SC: O(1)
     }
 
     // ===== TESTS =====

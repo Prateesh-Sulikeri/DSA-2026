@@ -11,10 +11,12 @@ public class MaximumSubarray {
             for (int n : nums) {
                 curSum = Math.max(n, curSum + n);
                 maxSum = Math.max(maxSum, curSum);
-            }
+            } // TC: O(n)
 
             return maxSum;
         }
+        // TC: O(n)
+        // SC: O(1)
     }
 
     // ===== TESTS =====

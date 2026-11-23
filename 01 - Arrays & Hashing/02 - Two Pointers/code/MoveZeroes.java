@@ -15,8 +15,10 @@ public class MoveZeroes {
                     nums[read] = temp;
                     write++;
                 }
-            }
+            } // TC: O(n) single pass, each element swapped at most once
         }
+        // TC: O(n)
+        // SC: O(1)
     }
 
     // ===== TESTS =====

@@ -7,21 +7,23 @@ public class MajorityElementII {
     // ===== SOLUTION =====
     static class Solution {
         public List<Integer> majorityElement(int[] nums) {
-            Map<Integer, Integer> freqMap = new HashMap<>();
-            List<Integer> res = new ArrayList<>();
+            Map<Integer, Integer> freqMap = new HashMap<>(); // SC: O(m), m = number of distinct values
+            List<Integer> res = new ArrayList<>(); // SC: O(1), at most 2 elements are > n/3
 
             for (int n : nums) {
                 int freq = freqMap.getOrDefault(n, 0) + 1;
                 freqMap.put(n, freq);
-            }
+            } // TC: O(n)
 
             for (Map.Entry<Integer, Integer> entry :  freqMap.entrySet()) {
                 if (entry.getValue() > nums.length / 3)
                     res.add(entry.getKey());
-            }
+            } // TC: O(m)
 
             return res;
         }
+        // TC: O(n) + O(m) -> O(n), since m <= n
+        // SC: O(m)
 
         public List<Integer> majpIntegers2(int[] nums) {
             int c1 = 0, c2 = 0, n1 = 0, n2 = 0;
@@ -31,15 +33,17 @@ public class MajorityElementII {
                 else if (n1 == 0) { c1 = x; n1 = 1; }
                 else if (n2 == 0) { c2 = x; n2 = 1; }
                 else { n1--; n2--; }
-            }
+            } // TC: O(n)
 
             n1 = 0; n2 = 0;
-            for (int x: nums) { if (x == c1) n1++; else if (x == c2) n2++;}
-            List<Integer> res = new ArrayList<>();
+            for (int x: nums) { if (x == c1) n1++; else if (x == c2) n2++;} // TC: O(n)
+            List<Integer> res = new ArrayList<>(); // SC: O(1), at most 2 elements
             if(n1 > nums.length / 3) res.add(c1);
             if(n2 > nums.length / 3) res.add(c2);
             return res;
         }
+        // TC: O(n) + O(n) -> O(n)
+        // SC: O(1)
     }
 
     // ===== TESTS =====

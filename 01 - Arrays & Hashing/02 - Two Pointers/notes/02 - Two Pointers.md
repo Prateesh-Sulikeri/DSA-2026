@@ -1,7 +1,7 @@
 ---
 tags: [dsa, pattern/arrays-hashing, pattern/arrays-hashing/two-pointers]
 status: learning
-last_revised: 2026-11-20
+last_revised: 2026-11-23
 ---
 
 # Two Pointers
@@ -559,7 +559,7 @@ return write;                             // new length
 > ```
 
 ### LC 42 · Trapping Rain Water · 🔴 Hard
-[Link](https://leetcode.com/problems/trapping-rain-water/) · Confidence: ⚠️
+[Link](https://leetcode.com/problems/trapping-rain-water/) · Confidence: ✅
 
 - **Key insight:** water above bar `i` is `min(maxLeft, maxRight) − height[i]`. With two pointers, move the side whose bar is shorter: the other side already has a wall at least that tall, so this side's own running max decides the water.
 - **Approach:**

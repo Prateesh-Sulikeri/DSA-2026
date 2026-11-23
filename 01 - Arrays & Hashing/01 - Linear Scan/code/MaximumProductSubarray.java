@@ -23,10 +23,12 @@ public class MaximumProductSubarray {
                 minProd = Math.min(curr, minProd * curr);
 
                 res = Math.max(res, maxProd);
-            }
+            } // TC: O(n)
 
             return res;
         }
+        // TC: O(n)
+        // SC: O(1)
     }
 
     // ===== TESTS =====

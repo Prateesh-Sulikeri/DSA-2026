@@ -19,9 +19,11 @@ public class ContainerWithMostWater {
                     i++;
                 else
                     j--;
-            }
+            } // TC: O(n) each step moves one pointer inward
             return maxArea;
         }
+        // TC: O(n)
+        // SC: O(1)
     }
 
     // ===== TESTS =====

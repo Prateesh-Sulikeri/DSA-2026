@@ -11,8 +11,8 @@ public class AssignCookies {
             int left = 0;
             int right = 0;
 
-            Arrays.sort(g);
-            Arrays.sort(s);
+            Arrays.sort(g); // TC: O(g log g), g = number of children; SC: O(log g) sort stack
+            Arrays.sort(s); // TC: O(s log s), s = number of cookies; SC: O(log s)
 
             while (left < g.length && right < s.length) {
                 if (s[right] >= g[left]) {
@@ -20,10 +20,12 @@ public class AssignCookies {
                 }
 
                 right++;
-            }
+            } // TC: O(g + s) both pointers only move forward
 
             return left;
         }
+        // TC: O(g log g + s log s) sorting dominates
+        // SC: O(log g + log s)
     }
 
     // ===== TESTS =====

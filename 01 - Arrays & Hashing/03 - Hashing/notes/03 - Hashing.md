@@ -1,7 +1,7 @@
 ---
 tags: [dsa, pattern/arrays-hashing, pattern/arrays-hashing/hashing]
 status: learning
-last_revised: 2026-11-20
+last_revised: 2026-11-23
 ---
 
 # Hashing
@@ -16,9 +16,11 @@ last_revised: 2026-11-20
 ## Recognition Signals
 - "Contains duplicate" / "any value appears twice" → HashSet, return on the first failed `add`
 - "Count how often each value appears" → HashMap value → count (or `int[26]` for lowercase letters)
+- "Value appearing more than n/2 times" → frequency map, return as soon as a count passes `n / 2` (O(1) space → Boyer-Moore)
 - "Unsorted array, find two indices with sum = target" → HashMap value → index, look up `target − x` before you put `x`
 - "Same letters, rearranged" / "is t an anagram of s" → compare letter counts, `++` for one string and `--` for the other
-- "Group items that are the same in some way" → HashMap key → list, where the key is the shared form
+- "Group items that are the same in some way" → HashMap key → list, where the key is the shared form (anagrams → sorted word or letter-count string)
+- "Top k most frequent" / "k most common" → count map, then bucket by frequency (O(n)) or a size-k min-heap (O(n log k))
 - ✗ Not this when: O(1) extra space is required and the array can be modified → sort, then compare neighbours
 - ✗ Not this when: the input is already sorted → [[02 - Two Pointers]] or compare neighbours, no extra memory needed
 
@@ -46,6 +48,8 @@ for (int num : nums) {
 | **Seen-set** | `HashSet<T>` | only presence matters (duplicates, membership) |
 | **Frequency map** | `HashMap<T, Integer>` | you need how many times each value appears |
 | **Fixed-size count array** | `int[26]` / `int[128]` | the keys are small, known characters → faster than a map |
+| **Group by key** | `HashMap<K, List<T>>` + `computeIfAbsent` | items that share a canonical form go in one bucket |
+| **Bucket by frequency** | `HashMap` counts + `List<Integer>[n + 1]` | top k by count → frequencies are at most n, so bucket instead of sorting |
 | **Sort instead** | none (sort in place) | O(1) extra space and the input may be changed → O(n log n) |
 
 ## Problems
@@ -160,6 +164,161 @@ for (int num : nums) {
 > }
 > ```
 
+### LC 169 · Majority Element (HashMap) · 🟢 Easy
+[Link](https://leetcode.com/problems/majority-element/) · Confidence: ✅
+
+- **Key insight:** count each value in a HashMap as you go; the first value whose count passes `n / 2` is the majority, so return it right there.
+- **Approach:**
+  1. Walk the array once, `freq = map.getOrDefault(num, 0) + 1`, then put it back.
+  2. If `freq > n / 2` → return `num` (early exit, no second pass).
+  3. Loop ends → no majority (can't happen when one is guaranteed).
+- **Brute → Optimal:** O(n²) count each element → O(n) HashMap counts, O(n) space (this one) → O(n) [[01 - Linear Scan#LC 169 · Majority Element · 🟢 Easy|Boyer-Moore]], O(1) space.
+- **Complexity:** frequency map O(n) time · O(n) space (up to n/2 distinct keys) · Boyer-Moore O(n) time · O(1) space
+- **Edge cases:** single element, all the same, majority at the very end (`[1,2,2]`), negatives.
+- **Clarifying questions:** is a majority guaranteed to exist? Is O(n) extra memory fine, or is O(1) required? Can I sort the array?
+- **Follow-ups:** O(1) space → [[01 - Linear Scan#LC 169 · Majority Element · 🟢 Easy|Boyer-Moore voting]] · no guarantee → return a sentinel when the loop finishes · elements > n/3 times (LC 229) → same map, collect every key with count > n/3 (or Boyer-Moore with 2 candidates).
+- **Practice:** `01 - Arrays & Hashing/03 - Hashing/code/MajorityElementHashMap.java` · run: `java MajorityElementHashMap.java` from that folder (or F5 in Zed) · `majorityElement` = map, `majElem` = Boyer-Moore
+
+> [!example]- Code (Java) · Approach 1: frequency map
+> ```java
+> class Solution {
+>     public int majorityElement(int[] nums) {
+>         Map<Integer, Integer> freqMap = new HashMap<>();
+>         for (int n : nums) {
+>             int freq = freqMap.getOrDefault(n, 0) + 1;
+>             freqMap.put(n, freq);
+>             if (freq > nums.length / 2) return n;   // strictly more than half → majority, stop early
+>         }
+>         return -1;   // unreachable when a majority is guaranteed
+>     }
+> }
+> ```
+
+> [!example]- Code (Java) · Approach 2: Boyer-Moore voting (O(1) space)
+> ```java
+> class Solution {
+>     public int majorityElement(int[] nums) {
+>         int candidate = 0, count = 0;
+>         for (int num : nums) {
+>             if (count == 0) candidate = num;          // no live candidate → take this one
+>             count += (num == candidate) ? 1 : -1;     // same → vote for, different → cancel one
+>         }
+>         return candidate;   // guaranteed to exist, so no verify pass
+>     }
+> }
+> ```
+
+### LC 49 · Group Anagrams · 🟡 Medium
+[Link](https://leetcode.com/problems/group-anagrams/) · Confidence: ✅
+
+- **Key insight:** anagrams share one canonical form (the word with its letters sorted), so use that form as a HashMap key and drop every word into its key's list.
+- **Approach:**
+  1. For each word, sort its letters → `key` (`"eat"` → `"aet"`).
+  2. `map.computeIfAbsent(key, k -> new ArrayList<>()).add(word)` → creates the list the first time, then appends.
+  3. Return `new ArrayList<>(map.values())`.
+- **Brute → Optimal:** O(n² · k) compare every pair with [[03 - Hashing#LC 242 · Valid Anagram · 🟢 Easy|Valid Anagram]] → O(n · k log k) sorted-word key → O(n · k) count-array key (no sort).
+- **Complexity:** sorted key O(n · k log k) time · O(n · k) space · count key O(n · k) time · O(n · k) space (n words, k = longest word)
+- **Edge cases:** empty string `""` (its own group), a single word, no anagrams at all (every group size 1), all words anagrams of each other, duplicate words.
+- **Clarifying questions:** only lowercase `a–z`? Does the order of groups or of words inside a group matter? Can a word be empty?
+- **Follow-ups:** Unicode input → sorted-word key still works, the `int[26]` key doesn't · very long words → count key, O(k) instead of O(k log k) · find anagrams of one pattern inside a string (LC 438) → sliding window of letter counts.
+- **Practice:** `01 - Arrays & Hashing/03 - Hashing/code/GroupAnagrams.java` · run: `java GroupAnagrams.java` from that folder (or F5 in Zed) · `groupAnagrams` = sorted key, `grpAnagrams` = count key
+
+> [!example]- Code (Java) · Approach 1: sorted word as the key
+> ```java
+> class Solution {
+>     public List<List<String>> groupAnagrams(String[] strs) {
+>         Map<String, List<String>> groups = new HashMap<>();
+>         for (String word : strs) {
+>             char[] letters = word.toCharArray();
+>             Arrays.sort(letters);
+>             String key = new String(letters);                          // "eat", "tea" → "aet"
+>             groups.computeIfAbsent(key, k -> new ArrayList<>()).add(word);   // make the list once, then append
+>         }
+>         return new ArrayList<>(groups.values());
+>     }
+> }
+> ```
+
+> [!example]- Code (Java) · Approach 2: letter counts as the key (no sort)
+> ```java
+> class Solution {
+>     public List<List<String>> groupAnagrams(String[] strs) {
+>         Map<List<Integer>, List<String>> groups = new HashMap<>();
+>         for (String word : strs) {
+>             int[] count = new int[26];
+>             for (char c : word.toCharArray()) count[c - 'a']++;
+>             List<Integer> key = Arrays.stream(count).boxed().toList();   // List compares by value, int[] doesn't
+>             groups.computeIfAbsent(key, k -> new ArrayList<>()).add(word);
+>         }
+>         return new ArrayList<>(groups.values());
+>     }
+> }
+> ```
+
+### LC 347 · Top K Frequent Elements · 🟡 Medium
+[Link](https://leetcode.com/problems/top-k-frequent-elements/) · Confidence: ⚠️
+
+- **Key insight:** a frequency can never be more than `n`, so after counting with a HashMap, put each value in bucket `freq` (an array of lists of size `n + 1`) and read the buckets from the highest frequency down. That's a bucket sort, so it takes O(n) with no full sort.
+- **Approach:**
+  1. Count every value: `count.merge(num, 1, Integer::sum)`.
+  2. Make `List<Integer>[] buckets = new List[n + 1]`, then for each (value, freq) add the value to `buckets[freq]`.
+  3. Walk `freq` from `n` down to `1`, copying values into the result until it holds `k`.
+- **Brute → Optimal:** O(n log n) count, then sort the distinct values by frequency → O(n log k) min-heap of size k (drop the least frequent once size > k) → O(n) bucket by frequency.
+- **Complexity:** bucket O(n) time · O(n) space · heap O(n log k) time · O(n + k) space
+- **Edge cases:** `k` = number of distinct values (return them all), a single element, all values the same, negatives and 0 as the answer, one value much more frequent than the rest.
+- **Clarifying questions:** is the answer guaranteed to be unique (no tie at the k-th place)? Does the output order matter? Is `k` always ≤ the number of distinct values?
+- **Follow-ups:** better than O(n log n) → bucket sort O(n) or heap O(n log k) · stream of numbers / `k` much smaller than n → keep a size-k min-heap · ties must break by value → heap with a comparator on (freq, value) · top k frequent words (LC 692) → same idea, ties broken alphabetically.
+- **Practice:** `01 - Arrays & Hashing/03 - Hashing/code/TopKFrequentElements.java` · run: `java TopKFrequentElements.java` from that folder (or F5 in Zed)
+
+> [!example]- Code (Java) · Approach 1: min-heap of size k
+> ```java
+> class Solution {
+>     public int[] topKFrequent(int[] nums, int k) {
+>         Map<Integer, Integer> count = new HashMap<>();
+>         for (int num : nums) count.merge(num, 1, Integer::sum);
+>
+>         // min-heap by frequency → the root is the least frequent of the current top k
+>         PriorityQueue<Integer> minHeap = new PriorityQueue<>((a, b) -> count.get(a) - count.get(b));
+>         for (int num : count.keySet()) {
+>             minHeap.offer(num);
+>             if (minHeap.size() > k) minHeap.poll();   // drop the least frequent, keep k
+>         }
+>
+>         int[] result = new int[k];
+>         for (int i = k - 1; i >= 0; i--) result[i] = minHeap.poll();
+>         return result;
+>     }
+> }
+> ```
+
+> [!example]- Code (Java) · Approach 2: bucket by frequency (optimal)
+> ```java
+> class Solution {
+>     public int[] topKFrequent(int[] nums, int k) {
+>         Map<Integer, Integer> count = new HashMap<>();
+>         for (int num : nums) count.merge(num, 1, Integer::sum);
+>
+>         List<Integer>[] buckets = new List[nums.length + 1];   // index = frequency, max is n
+>         for (Map.Entry<Integer, Integer> e : count.entrySet()) {
+>             int freq = e.getValue();
+>             if (buckets[freq] == null) buckets[freq] = new ArrayList<>();
+>             buckets[freq].add(e.getKey());
+>         }
+>
+>         int[] result = new int[k];
+>         int filled = 0;
+>         for (int freq = nums.length; freq >= 1 && filled < k; freq--) {   // highest frequency first
+>             if (buckets[freq] == null) continue;
+>             for (int num : buckets[freq]) {
+>                 if (filled == k) break;
+>                 result[filled++] = num;
+>             }
+>         }
+>         return result;
+>     }
+> }
+> ```
+
 ## Pitfalls
 - Calling `contains` and then `add` → two lookups for one; `add` already tells you if the value was there.
 - Sorting to save memory changes the caller's array → ask before you modify the input.
@@ -167,9 +326,17 @@ for (int num : nums) {
 - Two Sum: putting `nums[i]` in the map before the lookup → `[3, 2, 4]`, target 6 returns `[0, 0]` (the 3 pairs with itself).
 - Anagram: skipping the length check → `"a"` vs `"ab"` slips through if you only loop over one string.
 - Anagram: `int[26]` with `c − 'a'` breaks on uppercase or Unicode → `ArrayIndexOutOfBounds`; ask about the charset first.
+- Group Anagrams: `int[]` as a map key compares by reference → every word gets its own group; convert it to a `List<Integer>` (`Arrays.stream(count).boxed().toList()`) or a `String` (`Arrays.toString`).
+- Group Anagrams: building the count key by joining digits with no separator → `[1,11]` and `[11,1]` both become `"111"`.
+- `get` → null check → `put` → `add` is four lines for one idea; `computeIfAbsent(key, k -> new ArrayList<>()).add(x)` does it in one.
+- Top K: buckets of size `n` instead of `n + 1` → a value that fills the whole array (freq = n) is out of bounds.
+- Top K: max-heap of every distinct value works but is O(n log n); a **min**-heap capped at k is O(n log k).
+- Majority: `freq >= n / 2` instead of `>` → `[1,2]` returns 1, but "more than half" means strictly greater.
 
 ## Related
 - [[01 - Linear Scan]]: sibling Arrays sub-topic, for one pass with a running value.
 - LC 1 Two Sum, the other two approaches: [[01 - Linear Scan#LC 1 · Two Sum (Brute Force) · 🟢 Easy|brute force]] (O(n²)) · [[02 - Two Pointers#LC 1 · Two Sum (Sort + Two Pointers) · 🟢 Easy|sort + two pointers]] (O(n log n)).
+- LC 169 Majority Element, O(1)-space approach: [[01 - Linear Scan#LC 169 · Majority Element · 🟢 Easy|Boyer-Moore voting]].
 - [[02 - Two Pointers]]: sibling Arrays sub-topic; use it instead of a set when the input is sorted.
+- [[10 - Heap]]: LC 347 Top K Frequent Elements also fits Heap / Top-K; the size-k min-heap approach is in its code callout.
 - [[02 - Sliding Window]]: "duplicate within distance k" keeps a set of only the last k values.

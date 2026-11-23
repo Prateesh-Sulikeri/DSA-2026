@@ -7,8 +7,11 @@ public class ContainsDuplicate {
     // ===== SOLUTION =====
     static class Solution {
         public boolean containsDuplicate(int[] nums) {
-            return Arrays.stream(nums).distinct().count() < nums.length;
-        }
+            return Arrays.stream(nums).distinct().count() < nums.length; // SC: O(m), m = number of distinct values (distinct() keeps a set)
+        } // TC: O(n)
+
+        // TC: O(n)
+        // SC: O(n)   (m <= n)
     }
 
     // ===== TESTS =====

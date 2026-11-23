@@ -13,10 +13,12 @@ public class RemoveDuplicatesFromSortedArrayII {
                     nums[i] = nums[j];
                     i++;
                 }
-            }
+            } // TC: O(n) single pass
 
             return i;
         }
+        // TC: O(n)
+        // SC: O(1)
     }
 
     // ===== TESTS =====

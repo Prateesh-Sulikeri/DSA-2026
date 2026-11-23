@@ -154,6 +154,11 @@ When I ask you to add a problem or a pattern:
   - **Master index** (`00 - Master Index.md`): add a row in **All problems**, update that pattern's counts and the Total in **Progress**, and add it to the **Redo queue** if it is ❌ or ⚠️. If it is a new cross-pattern signal, add a row in **Which pattern?**.
   - Link straight to the problem heading with `[[NN - Pattern#<exact heading text>\|Short name]]`, never just to the file.
   - When a confidence changes on a revision pass, update it in both indexes and in the redo queue.
+2c. **TC & SC comments** in practice files: I usually add these myself when I write my solution.
+  - Format: `// TC: ...` / `// SC: ...` on the line (or closing `}`) that costs it, plus a total at the end of each method (`// TC: O(...)` and `// SC: O(...)`). Define every variable other than `n` (for example `m = number of distinct values`).
+  - If my solution has none → ask me **once** whether to add them. Don't keep asking.
+  - If I already added them → refine the wording and fix wrong maths (for example `+` where it should be `×`, or the wrong loop bound), then save. Keep my style; never change the code itself.
+  - Stubs (`// TODO`) get no TC/SC comments. Those belong to my solution, not the template.
 3. If the problem introduces a new variant or pitfall, also update **Variants**, **Pitfalls** or **Recognition Signals** in that pattern file.
 4. Set `last_revised` in the frontmatter to today's date whenever the file meaningfully changes.
 5. Don't rewrite my own wording in notes I've already written unless I ask. Point out mistakes instead of silently "fixing" them.

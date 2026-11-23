@@ -1,7 +1,7 @@
 ---
 tags: [dsa, index, index/pattern, pattern/arrays-hashing]
 status: learning
-last_revised: 2026-11-20
+last_revised: 2026-11-23
 ---
 
 # 01 · Arrays & Hashing: Index
@@ -21,6 +21,7 @@ Run a practice file with `java <ProblemName>.java` from its `code/` folder (or F
 | Signal in the problem | Jump to |
 |-----------------------|---------|
 | Element appearing > n/2 times, O(1) space | [[01 - Linear Scan#LC 169 · Majority Element · 🟢 Easy\|LC 169 Majority Element]] (Boyer-Moore) |
+| Element appearing > n/2 times, O(n) space is fine | [[03 - Hashing#LC 169 · Majority Element (HashMap) · 🟢 Easy\|LC 169 Majority Element (HashMap)]] (count map, return once a count passes `n / 2`) |
 | Elements appearing > n/3 (or n/k) times | [[01 - Linear Scan#LC 229 · Majority Element II · 🟡 Medium\|LC 229 Majority Element II]] (Boyer-Moore, 2 candidates) |
 | Max / min sum of contiguous subarray | [[01 - Linear Scan#LC 53 · Maximum Subarray (Kadane's Algorithm) · 🟡 Medium\|LC 53 Maximum Subarray]] (Kadane) |
 | Max product of contiguous subarray (negatives flip sign) | [[01 - Linear Scan#LC 152 · Maximum Product Subarray · 🟡 Medium\|LC 152 Maximum Product Subarray]] (Kadane, max + min) |
@@ -28,6 +29,8 @@ Run a practice file with `java <ProblemName>.java` from its `code/` folder (or F
 | Count / presence / duplicates | [[01 - Linear Scan#Template\|Linear Scan]] (HashMap) |
 | Does any value appear twice? | [[03 - Hashing#LC 217 · Contains Duplicate · 🟢 Easy\|LC 217 Contains Duplicate]] (HashSet, stop at the first failed `add`) |
 | Same letters rearranged (is t an anagram of s?) | [[03 - Hashing#LC 242 · Valid Anagram · 🟢 Easy\|LC 242 Valid Anagram]] (`int[26]`, `++` for s, `--` for t, all zero) |
+| Group words that are anagrams of each other | [[03 - Hashing#LC 49 · Group Anagrams · 🟡 Medium\|LC 49 Group Anagrams]] (HashMap sorted word → list, `computeIfAbsent`) |
+| Top k most frequent values | [[03 - Hashing#LC 347 · Top K Frequent Elements · 🟡 Medium\|LC 347 Top K Frequent Elements]] (count map → bucket by frequency, read from the top) |
 | Sorted array, pair / triplet with sum = target | [[02 - Two Pointers#Template\|Two Pointers]] (opposite ends) |
 | Remove / move / partition in place | [[02 - Two Pointers#Variants\|Two Pointers]] (slow / fast) |
 | Sorted array, pair with sum = target (O(1) space) | [[02 - Two Pointers#LC 167 · Two Sum II · 🟡 Medium\|LC 167 Two Sum II]] (opposite ends) |
@@ -66,9 +69,12 @@ Run a practice file with `java <ProblemName>.java` from its `code/` folder (or F
 | 1 | [[02 - Two Pointers#LC 1 · Two Sum (Sort + Two Pointers) · 🟢 Easy\|Two Sum (Sort + Two Pointers)]] | Two Pointers | Sort (value, index) pairs + opposite ends | 🟢 | ✅ | `TwoSumTwoPointers.java` |
 | 881 | [[02 - Two Pointers#LC 881 · Boats to Save People · 🟡 Medium\|Boats to Save People]] | Two Pointers | Sort, heaviest + lightest | 🟡 | ⚠️ | `BoatsToSavePeople.java` |
 | 31 | [[02 - Two Pointers#LC 31 · Next Permutation · 🟡 Medium\|Next Permutation]] | Two Pointers | Pivot, swap, reverse suffix | 🟡 | ❌ | `NextPermutation.java` |
-| 42 | [[02 - Two Pointers#LC 42 · Trapping Rain Water · 🔴 Hard\|Trapping Rain Water]] | Two Pointers | Opposite ends, running max | 🔴 | ⚠️ | `TrappingRainWater.java` |
+| 42 | [[02 - Two Pointers#LC 42 · Trapping Rain Water · 🔴 Hard\|Trapping Rain Water]] | Two Pointers | Opposite ends, running max | 🔴 | ✅ | `TrappingRainWater.java` |
 | 217 | [[03 - Hashing#LC 217 · Contains Duplicate · 🟢 Easy\|Contains Duplicate]] | Hashing | HashSet seen-set | 🟢 | ✅ | `ContainsDuplicate.java` |
 | 242 | [[03 - Hashing#LC 242 · Valid Anagram · 🟢 Easy\|Valid Anagram]] | Hashing | Letter count `int[26]` | 🟢 | ✅ | `ValidAnagram.java` |
 | 1 | [[03 - Hashing#LC 1 · Two Sum (HashMap) · 🟢 Easy\|Two Sum (HashMap)]] | Hashing | HashMap complement | 🟢 | ✅ | `TwoSumHashMap.java` |
+| 169 | [[03 - Hashing#LC 169 · Majority Element (HashMap) · 🟢 Easy\|Majority Element (HashMap)]] | Hashing | Frequency map, early exit | 🟢 | ✅ | `MajorityElementHashMap.java` |
+| 49 | [[03 - Hashing#LC 49 · Group Anagrams · 🟡 Medium\|Group Anagrams]] | Hashing | Group by key (sorted word) | 🟡 | ✅ | `GroupAnagrams.java` |
+| 347 | [[03 - Hashing#LC 347 · Top K Frequent Elements · 🟡 Medium\|Top K Frequent Elements]] | Hashing | Count map + bucket by frequency | 🟡 | ⚠️ | `TopKFrequentElements.java` |
 
-**Totals:** 23 problems · ✅ 15 · ⚠️ 4 · ❌ 4 (Linear Scan 5 · Two Pointers 15 · Hashing 3). LC 1 Two Sum is counted once per approach.
+**Totals:** 26 problems · ✅ 18 · ⚠️ 4 · ❌ 4 (Linear Scan 5 · Two Pointers 15 · Hashing 6). LC 1 Two Sum and LC 169 Majority Element are counted once per approach.

@@ -13,9 +13,11 @@ public class TwoSumII {
                 if (sum == target) return new int[]{left + 1, right + 1};  // 1-indexed answer
                 if (sum < target) left++;                  // need bigger → move the small side up
                 else right--;                              // need smaller → move the big side down
-            }
+            } // TC: O(n) each step moves one pointer inward
             return new int[]{-1, -1};
         }
+        // TC: O(n)
+        // SC: O(1)
     }
 
     // ===== TESTS =====

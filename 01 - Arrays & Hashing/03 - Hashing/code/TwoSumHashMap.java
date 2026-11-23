@@ -9,16 +9,19 @@ public class TwoSumHashMap {
     // ===== SOLUTION =====
     static class Solution {
         public int[] twoSum(int[] nums, int target) {
-            Map<Integer, Integer> seen = new HashMap<>();
+            Map<Integer, Integer> seen = new HashMap<>(); // SC: O(n)   (at most n entries)
 
             for (int i=0 ; i<nums.length ; i++) {
                 Integer j = seen.get(target - nums[i]);
                 if (j != null) return new int[]{j, i};
                 seen.put(nums[i], i);
-            }
+            } // TC: O(n) × O(1) -> O(n)   (HashMap get/put are O(1) average)
 
             return new int[]{-1, -1};
         }
+
+        // TC: O(n)
+        // SC: O(n)
     }
 
     // ===== TESTS =====

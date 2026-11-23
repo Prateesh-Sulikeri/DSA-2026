@@ -9,8 +9,8 @@ public class ThreeSum {
     // ===== SOLUTION =====
     static class Solution {
         public List<List<Integer>> threeSum(int[] nums) {
-            Arrays.sort(nums);
-            List<List<Integer>> res = new ArrayList<>();
+            Arrays.sort(nums); // TC: O(n log n); SC: O(log n) sort stack
+            List<List<Integer>> res = new ArrayList<>(); // SC: O(k) for the output only, k = number of triplets
             for (int i=0 ; i<nums.length ; i++) {
                 if (i>0 && nums[i] == nums[i-1]) continue;
 
@@ -29,10 +29,12 @@ public class ThreeSum {
                     }
                     else if (sum > 0) k--;
                     else j++;
-                }
-            }
+                } // TC: O(n) j and k only move inward (amortised)
+            } // TC: O(n) × O(n) -> O(n²)
             return res;
         }
+        // TC: O(n log n) + O(n²) -> O(n²)
+        // SC: O(log n), excluding the output
     }
 
     // ===== TESTS =====

@@ -28,9 +28,11 @@ public class TrappingRainWater {
 
                     water += rightMax - height[right];
                 }
-            }
+            } // TC: O(n) each step moves one pointer inward
             return water;
         }
+        // TC: O(n)
+        // SC: O(1)
     }
 
     // ===== TESTS =====

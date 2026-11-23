@@ -11,8 +11,8 @@ public class FourSum {
         public List<List<Integer>> fourSum(int[] nums, int target) {
 
             int n = nums.length;
-            List<List<Integer>> res = new ArrayList<>();
-            Arrays.sort(nums);
+            List<List<Integer>> res = new ArrayList<>(); // SC: O(k) for the output only, k = number of quadruplets
+            Arrays.sort(nums); // TC: O(n log n); SC: O(log n) sort stack
 
             for (int i=0 ; i<n - 3 ; i++) {
                 if (i>0 && nums[i] == nums[i-1]) continue;
@@ -39,11 +39,13 @@ public class FourSum {
                             l--;
                         else
                             k++;
-                    }
-                }
-            }
+                    } // TC: O(n) k and l only move inward (amortised)
+                } // TC: O(n) × O(n) -> O(n²)
+            } // TC: O(n) × O(n²) -> O(n³)
             return res;
         }
+        // TC: O(n log n) + O(n³) -> O(n³)
+        // SC: O(log n), excluding the output
     }
 
     // ===== TESTS =====

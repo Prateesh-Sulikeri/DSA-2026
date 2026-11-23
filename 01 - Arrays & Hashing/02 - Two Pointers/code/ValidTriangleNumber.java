@@ -9,7 +9,7 @@ public class ValidTriangleNumber {
         public int triangleNumber(int[] nums) {
             int count = 0;
             int n = nums.length;
-            Arrays.sort(nums);
+            Arrays.sort(nums); // TC: O(n log n); SC: O(log n) sort stack
 
             for (int k = n-1 ; k>=2 ; k--) {
                 int i = 0;
@@ -24,10 +24,12 @@ public class ValidTriangleNumber {
                     else {
                         i++;
                     }
-                }
-            }
+                } // TC: O(n) i and j only move inward (amortised)
+            } // TC: O(n) × O(n) -> O(n²)
             return count;
         }
+        // TC: O(n log n) + O(n²) -> O(n²)
+        // SC: O(log n)
     }
 
     // ===== TESTS =====

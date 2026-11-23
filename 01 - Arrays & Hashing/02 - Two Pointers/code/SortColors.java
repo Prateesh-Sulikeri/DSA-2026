@@ -24,8 +24,10 @@ public class SortColors {
                 else {
                     j++;
                 }
-            }
+            } // TC: O(n) every step advances j or shrinks k, so at most n steps
         }
+        // TC: O(n) single pass
+        // SC: O(1)
 
         private void swap(int[] nums, int i, int j) {
             int temp = nums[i];
