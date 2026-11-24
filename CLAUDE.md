@@ -9,59 +9,63 @@ Every rule below serves both goals. All the important information is in the note
 ## Structure: one file per pattern
 
 - Each pattern gets **one file**, and the problems for that pattern go inside it as sections.
-- **One folder per pattern**, named `NN - Pattern Name/`. `NN` is the study order. Everything for that pattern lives inside it:
+- **One folder per pattern**, named `NN-Pattern-Name/`. `NN` is the study order. Everything for that pattern lives inside it:
+- **No spaces in any file or folder name.** Use `NN-Words-Joined-By-Hyphens` (drop `&` and `/`: `06-Fast-Slow-Pointers`, `04-Stack`).
   ```
   📊 DSA/
   ├── CLAUDE.md
-  ├── 00 - Master Index.md         ← tracks ALL patterns
-  ├── 01 - Arrays & Hashing/       ← pattern WITH sub-topics
-  │   ├── 00 - Index.md            ← one index for the whole pattern (all sub-topics)
-  │   ├── 01 - Linear Scan/
-  │   │   ├── notes/01 - Linear Scan.md
+  ├── 00-Master-Index.md           ← tracks ALL patterns
+  ├── 01-Arrays/                   ← pattern WITH sub-topics
+  │   ├── 00-Index.md              ← one index for the whole pattern (all sub-topics)
+  │   ├── 01-Linear-Scan/
+  │   │   ├── notes/01-Linear-Scan.md
   │   │   ├── code/<ProblemName>.java
   │   │   └── pdfs/<Section>_Cheat_Sheet.pdf · _Revision_Sheet.pdf · _Detailed_Notes.pdf
-  │   └── 02 - Two Pointers/
-  │       ├── notes/02 - Two Pointers.md
+  │   ├── 02-Two-Pointers/
+  │   ├── 03-Hashing/
+  │   └── 04-Prefix-Sum/
+  │       ├── notes/04-Prefix-Sum.md
   │       ├── code/
   │       └── pdfs/
-  └── 02 - Sliding Window/         ← pattern WITHOUT sub-topics
-      ├── 00 - Index.md
-      ├── notes/02 - Sliding Window.md
+  └── 02-Sliding-Window/           ← pattern WITHOUT sub-topics
+      ├── 00-Index.md
+      ├── notes/02-Sliding-Window.md
       ├── code/
       └── pdfs/
   ```
-- Pattern file: `NN - Pattern Name/notes/NN - Pattern Name.md` (for example `02 - Sliding Window/notes/02 - Sliding Window.md`).
-- **Sub-topics:** a big pattern can be split into sub-topic folders `NN - Pattern/MM - Sub-topic/`, each with its own `notes/`, `code/`, `pdfs/`. Then the sub-topic file *is* the pattern file in every rule below (template, problems, PDFs). The pattern keeps a single `00 - Index.md` covering all its sub-topics, with a **Sub-topics** table and a Sub-topic column in **Problems**.
+- Pattern file: `NN-Pattern-Name/notes/NN-Pattern-Name.md` (for example `02-Sliding-Window/notes/02-Sliding-Window.md`).
+- **Sub-topics:** a big pattern can be split into sub-topic folders `NN-Pattern/MM-Sub-topic/`, each with its own `notes/`, `code/`, `pdfs/`. Then the sub-topic file *is* the pattern file in every rule below (template, problems, PDFs). The pattern keeps a single `00-Index.md` covering all its sub-topics, with a **Sub-topics** table and a Sub-topic column in **Problems**.
 - `pdfs/` folders are git-ignored (generated output). Everything else is checked in.
 
 ### Two indexes
-- **`00 - Master Index.md`** (DSA root) tracks progress across all patterns:
+- **`00-Master-Index.md`** (DSA root) tracks progress across all patterns:
   - **Progress:** one row per pattern from the suggested order (plus a `↳` row per sub-topic): status, problem count, and ✅ / ⚠️ / ❌ counts, plus a Total row.
   - **Which pattern?:** the cross-pattern signal → pattern lookup.
   - **Redo queue:** every ❌ and ⚠️ problem, worst first.
   - **All problems:** every problem, with its pattern.
-- **`NN - Pattern Name/00 - Index.md`** is the index for one pattern:
+- **`NN-Pattern-Name/00-Index.md`** is the index for one pattern:
   - a back-link to the master index,
   - links to the notes, the practice code and the PDFs,
   - **Which technique?:** the signals inside this pattern,
   - **Problems:** with the practice file name, plus totals.
-- Every pattern index has the same file name, so link to it with its path: `[[NN - Pattern Name/00 - Index|index]]`.
+- Every pattern index has the same file name, so link to it with its path: `[[NN-Pattern-Name/00-Index|index]]`.
 - Keep the two indexes in sync. The counts, confidence and redo queue in the master index must match the pattern indexes.
-- If one problem's write-up gets too long for its pattern file (more than about 60 lines), move it to `NN - Pattern Name/notes/Problems/<Problem Name>.md` and link it from the pattern file with a short entry.
+- If one problem's write-up gets too long for its pattern file (more than about 60 lines), move it to `NN-Pattern-Name/notes/Problems/<Problem-Name>.md` and link it from the pattern file with a short entry.
 - A problem that fits several patterns goes under its **main** pattern. The others get a single-line link to it under **Related**.
 
 ### Suggested pattern order
 
 ```
-01 Arrays & Hashing        08 Binary Tree (DFS/BFS)   16 Backtracking
-   ↳ 01 Linear Scan        09 Binary Search Tree      17 Graphs (BFS/DFS)
-   ↳ 02 Two Pointers       10 Heap / Top-K            18 Topological Sort
-02 Sliding Window          11 Intervals               19 Union Find
-03 Prefix Sum              12 Greedy                  20 Shortest Path
-04 Binary Search           13 Trie                    21 1-D DP
-05 Stack / Monotonic Stack 14 Bit Manipulation        22 2-D DP
-06 Linked List             15 Math & Geometry         23 Advanced (Segment Tree, etc.)
-07 Fast & Slow Pointers
+01 Arrays                  07 Binary Tree (DFS/BFS)   15 Backtracking
+   ↳ 01 Linear Scan        08 Binary Search Tree      16 Graphs (BFS/DFS)
+   ↳ 02 Two Pointers       09 Heap / Top-K            17 Topological Sort
+   ↳ 03 Hashing            10 Intervals               18 Union Find
+   ↳ 04 Prefix Sum         11 Greedy                  19 Shortest Path
+02 Sliding Window          12 Trie                    20 1-D DP
+03 Binary Search           13 Bit Manipulation        21 2-D DP
+04 Stack / Monotonic Stack 14 Math & Geometry         22 Advanced (Segment Tree, etc.)
+05 Linked List
+06 Fast & Slow Pointers
 ```
 
 Rename, merge or reorder these as the notes grow. Keep the numbering continuous.
@@ -72,8 +76,8 @@ The two templates live in `_templates/` and are the **source of truth**. Always 
 
 | Template | Use it for | How |
 |----------|-----------|-----|
-| `_templates/DSA pattern.md` | a new pattern (or sub-topic) notes file | Obsidian: new note → **Templates: Insert template**. Claude: copy the file, fill in `{{title}}` and today's date for `last_revised`. |
-| `_templates/DSA problem.md` | each new problem under `## Problems` | Obsidian: cursor under `## Problems` → **Templates: Insert template**. Claude: copy the block and fill every field. |
+| `_templates/DSA-pattern.md` | a new pattern (or sub-topic) notes file | Obsidian: new note → **Templates: Insert template**. Claude: copy the file, fill in `{{title}}` and today's date for `last_revised`. |
+| `_templates/DSA-problem.md` | each new problem under `## Problems` | Obsidian: cursor under `## Problems` → **Templates: Insert template**. Claude: copy the block and fill every field. |
 
 If the layout ever needs to change, change the template file first, then this section.
 
@@ -81,7 +85,7 @@ If the layout ever needs to change, change the template file first, then this se
 Sections in this order: frontmatter (`tags`, `status: learning | revising | confident`, `last_revised`) → `# Title` → **TL;DR** (What / When / Complexity + a bold **Rule:**) → **Recognition Signals** (incl. `✗ Not this when:`) → **Template** → **Variants** → **Problems** (easy → hard) → **Pitfalls** → **Related**. Leave out a section only if it truly doesn't apply.
 
 ### Problem block
-A filled-in example of `_templates/DSA problem.md`:
+A filled-in example of `_templates/DSA-problem.md`:
 
 ````markdown
 ### LC 3 · Longest Substring Without Repeating Characters · 🟡 Medium
@@ -146,13 +150,13 @@ So the TL;DR, Rule and Key insight lines must make sense **on their own**, witho
 ## Instructions for Claude
 
 When I ask you to add a problem or a pattern:
-1. Work out the problem's main pattern and add it to that pattern's `notes/` file. If the pattern is new, create `NN - Pattern Name/` with `notes/`, `code/`, `pdfs/` and a `00 - Index.md` (copy the shape of `01 - Arrays & Hashing/00 - Index.md`, dropping the Sub-topics table if there are none), create the note from `_templates/DSA pattern.md`, and link the pattern in the master index's **Progress** table.
-2. Insert the problem in difficulty order (easy → hard) and copy `_templates/DSA problem.md` and fill every field, including Clarifying questions and Follow-ups.
-2a. Also create the runnable practice file `<pattern folder>/code/<ProblemName>.java`: a `public class <ProblemName>` whose FIRST member is `static class Solution` (empty stub, `return -1; // TODO`) under a `// ===== SOLUTION =====` header, then `main` + test cases (examples + the Edge cases) under `// ===== TESTS =====`. Solution goes on top so it's what you see first; it must be nested because `java File.java` runs the first top-level class. Self-contained, with `check`/`done` helpers (copy from `01 - Arrays & Hashing/01 - Linear Scan/code/MajorityElement.java`), ASCII `PASS`/`FAIL` output. The answer goes only in the note's collapsed Code callout, never in the practice file. Run the stub (must fail) and the reference (must pass) before finishing.
+1. Work out the problem's main pattern and add it to that pattern's `notes/` file. If the pattern is new, create `NN-Pattern-Name/` with `notes/`, `code/`, `pdfs/` and a `00-Index.md` (copy the shape of `01-Arrays/00-Index.md`, dropping the Sub-topics table if there are none), create the note from `_templates/DSA-pattern.md`, and link the pattern in the master index's **Progress** table.
+2. Insert the problem in difficulty order (easy → hard) and copy `_templates/DSA-problem.md` and fill every field, including Clarifying questions and Follow-ups.
+2a. Also create the runnable practice file `<pattern folder>/code/<ProblemName>.java`: a `public class <ProblemName>` whose FIRST member is `static class Solution` (empty stub, `return -1; // TODO`) under a `// ===== SOLUTION =====` header, then `main` + test cases (examples + the Edge cases) under `// ===== TESTS =====`. Solution goes on top so it's what you see first; it must be nested because `java File.java` runs the first top-level class. Self-contained, with `check`/`done` helpers (copy from `01-Arrays/01-Linear-Scan/code/MajorityElement.java`), ASCII `PASS`/`FAIL` output. The answer goes only in the note's collapsed Code callout, never in the practice file. Run the stub (must fail) and the reference (must pass) before finishing.
 2b. Add the problem to **both indexes**:
-  - **Pattern index** (`NN - Pattern Name/00 - Index.md`): add a row in **Problems** and update the totals. If the problem brings a new signal, add a row in **Which technique?**.
-  - **Master index** (`00 - Master Index.md`): add a row in **All problems**, update that pattern's counts and the Total in **Progress**, and add it to the **Redo queue** if it is ❌ or ⚠️. If it is a new cross-pattern signal, add a row in **Which pattern?**.
-  - Link straight to the problem heading with `[[NN - Pattern#<exact heading text>\|Short name]]`, never just to the file.
+  - **Pattern index** (`NN-Pattern-Name/00-Index.md`): add a row in **Problems** and update the totals. If the problem brings a new signal, add a row in **Which technique?**.
+  - **Master index** (`00-Master-Index.md`): add a row in **All problems**, update that pattern's counts and the Total in **Progress**, and add it to the **Redo queue** if it is ❌ or ⚠️. If it is a new cross-pattern signal, add a row in **Which pattern?**.
+  - Link straight to the problem heading with `[[NN-Pattern#<exact heading text>\|Short name]]`, never just to the file.
   - When a confidence changes on a revision pass, update it in both indexes and in the redo queue.
 2c. **TC & SC comments** in practice files: I usually add these myself when I write my solution.
   - Format: `// TC: ...` / `// SC: ...` on the line (or closing `}`) that costs it, plus a total at the end of each method (`// TC: O(...)` and `// SC: O(...)`). Define every variable other than `n` (for example `m = number of distinct values`).
