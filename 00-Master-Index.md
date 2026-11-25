@@ -1,6 +1,6 @@
 ---
 tags: [dsa, index, index/master]
-last_revised: 2026-11-24
+last_revised: 2026-11-25
 ---
 
 # DSA Master Index
@@ -10,10 +10,10 @@ Tracks progress **across all patterns**. Each pattern folder has its own `00-Ind
 ## Progress
 | # | Pattern | Pattern index | Status | Problems | ✅ | ⚠️ | ❌ |
 |---|---------|---------------|--------|----------|----|----|----|
-| 01 | Arrays | [[01-Arrays/00-Index\|index]] | learning | 30 | 20 | 6 | 4 |
-| ↳ 01.1 | [[01-Linear-Scan]] | | learning | 5 | 1 | 1 | 3 |
-| ↳ 01.2 | [[02-Two-Pointers]] | | learning | 16 | 13 | 2 | 1 |
-| ↳ 01.3 | [[03-Hashing]] | | learning | 8 | 5 | 3 | 0 |
+| 01 | Arrays | [[01-Arrays/00-Index\|index]] | learning | 30 | 26 | 0 | 4 |
+| ↳ 01.1 | [[01-Linear-Scan]] | | learning | 5 | 2 | 0 | 3 |
+| ↳ 01.2 | [[02-Two-Pointers]] | | learning | 16 | 15 | 0 | 1 |
+| ↳ 01.3 | [[03-Hashing]] | | learning | 8 | 8 | 0 | 0 |
 | ↳ 01.4 | [[04-Prefix-Sum]] | | learning | 1 | 1 | 0 | 0 |
 | 02 | Sliding Window | – | not started | 0 | | | |
 | 03 | Binary Search | – | not started | 0 | | | |
@@ -36,7 +36,7 @@ Tracks progress **across all patterns**. Each pattern folder has its own `00-Ind
 | 20 | 1-D DP | – | not started | 0 | | | |
 | 21 | 2-D DP | – | not started | 0 | | | |
 | 22 | Advanced (Segment Tree, etc.) | – | not started | 0 | | | |
-| | **Total** | | | **30** | **20** | **6** | **4** |
+| | **Total** | | | **30** | **26** | **0** | **4** |
 
 ## Which pattern?
 The first thing to check when you read a new problem.
@@ -81,18 +81,12 @@ Problems marked ❌ or ⚠️, worst first. Clear a row when it reaches ✅.
 | ❌ | 229 | [[01-Linear-Scan#LC 229 · Majority Element II · 🟡 Medium\|Majority Element II]] | 01.1 |
 | ❌ | 152 | [[01-Linear-Scan#LC 152 · Maximum Product Subarray · 🟡 Medium\|Maximum Product Subarray]] | 01.1 |
 | ❌ | 31 | [[02-Two-Pointers#LC 31 · Next Permutation · 🟡 Medium\|Next Permutation]] | 01.2 |
-| ⚠️ | 881 | [[02-Two-Pointers#LC 881 · Boats to Save People · 🟡 Medium\|Boats to Save People]] | 01.2 |
-| ⚠️ | 169 | [[01-Linear-Scan#LC 169 · Majority Element · 🟢 Easy\|Majority Element]] | 01.1 |
-| ⚠️ | 347 | [[03-Hashing#LC 347 · Top K Frequent Elements · 🟡 Medium\|Top K Frequent Elements]] | 01.3 |
-| ⚠️ | 36 | [[03-Hashing#LC 36 · Valid Sudoku · 🟡 Medium\|Valid Sudoku]] | 01.3 |
-| ⚠️ | 128 | [[03-Hashing#LC 128 · Longest Consecutive Sequence · 🟡 Medium\|Longest Consecutive Sequence]] | 01.3 |
-| ⚠️ | 80 | [[02-Two-Pointers#LC 80 · Remove Duplicates from Sorted Array II · 🟡 Medium\|Remove Duplicates from Sorted Array II]] | 01.2 |
 
 ## All problems
 | # | Problem | Pattern | Technique | Diff | Confidence |
 |---|---------|---------|-----------|------|-----------|
 | 1 | [[01-Linear-Scan#LC 1 · Two Sum (Brute Force) · 🟢 Easy\|Two Sum (Brute Force)]] | 01.1 Arrays › Linear Scan | Every pair, nested loops | 🟢 | ✅ |
-| 169 | [[01-Linear-Scan#LC 169 · Majority Element · 🟢 Easy\|Majority Element]] | 01.1 Arrays › Linear Scan | Boyer-Moore | 🟢 | ⚠️ |
+| 169 | [[01-Linear-Scan#LC 169 · Majority Element · 🟢 Easy\|Majority Element]] | 01.1 Arrays › Linear Scan | Boyer-Moore | 🟢 | ✅ |
 | 53 | [[01-Linear-Scan#LC 53 · Maximum Subarray (Kadane's Algorithm) · 🟡 Medium\|Maximum Subarray (Kadane)]] | 01.1 Arrays › Linear Scan | Kadane | 🟡 | ❌ |
 | 229 | [[01-Linear-Scan#LC 229 · Majority Element II · 🟡 Medium\|Majority Element II]] | 01.1 Arrays › Linear Scan | Boyer-Moore ×2 | 🟡 | ❌ |
 | 152 | [[01-Linear-Scan#LC 152 · Maximum Product Subarray · 🟡 Medium\|Maximum Product Subarray]] | 01.1 Arrays › Linear Scan | Kadane max+min | 🟡 | ❌ |
@@ -104,11 +98,11 @@ Problems marked ❌ or ⚠️, worst first. Clear a row when it reaches ✅.
 | 611 | [[02-Two-Pointers#LC 611 · Valid Triangle Number · 🟡 Medium\|Valid Triangle Number]] | 01.2 Arrays › Two Pointers | Sort + fix largest + count | 🟡 | ✅ |
 | 18 | [[02-Two-Pointers#LC 18 · 4Sum · 🟡 Medium\|4Sum]] | 01.2 Arrays › Two Pointers | Sort + fix 2 + pair | 🟡 | ✅ |
 | 11 | [[02-Two-Pointers#LC 11 · Container With Most Water · 🟡 Medium\|Container With Most Water]] | 01.2 Arrays › Two Pointers | Opposite ends, move shorter | 🟡 | ✅ |
-| 80 | [[02-Two-Pointers#LC 80 · Remove Duplicates from Sorted Array II · 🟡 Medium\|Remove Duplicates from Sorted Array II]] | 01.2 Arrays › Two Pointers | Slow / fast, compare `write − 2` | 🟡 | ⚠️ |
+| 80 | [[02-Two-Pointers#LC 80 · Remove Duplicates from Sorted Array II · 🟡 Medium\|Remove Duplicates from Sorted Array II]] | 01.2 Arrays › Two Pointers | Slow / fast, compare `write − 2` | 🟡 | ✅ |
 | 680 | [[02-Two-Pointers#LC 680 · Valid Palindrome II · 🟢 Easy\|Valid Palindrome II]] | 01.2 Arrays › Two Pointers | Opposite ends, one skip | 🟢 | ✅ |
 | 455 | [[02-Two-Pointers#LC 455 · Assign Cookies · 🟢 Easy\|Assign Cookies]] | 01.2 Arrays › Two Pointers | Sort both, greedy match | 🟢 | ✅ |
 | 1 | [[02-Two-Pointers#LC 1 · Two Sum (Sort + Two Pointers) · 🟢 Easy\|Two Sum (Sort + Two Pointers)]] | 01.2 Arrays › Two Pointers | Sort (value, index) pairs + opposite ends | 🟢 | ✅ |
-| 881 | [[02-Two-Pointers#LC 881 · Boats to Save People · 🟡 Medium\|Boats to Save People]] | 01.2 Arrays › Two Pointers | Sort, heaviest + lightest | 🟡 | ⚠️ |
+| 881 | [[02-Two-Pointers#LC 881 · Boats to Save People · 🟡 Medium\|Boats to Save People]] | 01.2 Arrays › Two Pointers | Sort, heaviest + lightest | 🟡 | ✅ |
 | 31 | [[02-Two-Pointers#LC 31 · Next Permutation · 🟡 Medium\|Next Permutation]] | 01.2 Arrays › Two Pointers | Pivot, swap, reverse suffix | 🟡 | ❌ |
 | 189 | [[02-Two-Pointers#LC 189 · Rotate Array · 🟡 Medium\|Rotate Array]] | 01.2 Arrays › Two Pointers | Three reverses | 🟡 | ✅ |
 | 42 | [[02-Two-Pointers#LC 42 · Trapping Rain Water · 🔴 Hard\|Trapping Rain Water]] | 01.2 Arrays › Two Pointers | Opposite ends, running max | 🔴 | ✅ |
@@ -117,7 +111,7 @@ Problems marked ❌ or ⚠️, worst first. Clear a row when it reaches ✅.
 | 1 | [[03-Hashing#LC 1 · Two Sum (HashMap) · 🟢 Easy\|Two Sum (HashMap)]] | 01.3 Arrays › Hashing | HashMap complement | 🟢 | ✅ |
 | 169 | [[03-Hashing#LC 169 · Majority Element (HashMap) · 🟢 Easy\|Majority Element (HashMap)]] | 01.3 Arrays › Hashing | Frequency map, early exit | 🟢 | ✅ |
 | 49 | [[03-Hashing#LC 49 · Group Anagrams · 🟡 Medium\|Group Anagrams]] | 01.3 Arrays › Hashing | Group by key (sorted word) | 🟡 | ✅ |
-| 347 | [[03-Hashing#LC 347 · Top K Frequent Elements · 🟡 Medium\|Top K Frequent Elements]] | 01.3 Arrays › Hashing | Count map + bucket by frequency | 🟡 | ⚠️ |
-| 36 | [[03-Hashing#LC 36 · Valid Sudoku · 🟡 Medium\|Valid Sudoku]] | 01.3 Arrays › Hashing | Seen-set per row / column / box | 🟡 | ⚠️ |
-| 128 | [[03-Hashing#LC 128 · Longest Consecutive Sequence · 🟡 Medium\|Longest Consecutive Sequence]] | 01.3 Arrays › Hashing | HashSet, count from run starts | 🟡 | ⚠️ |
+| 347 | [[03-Hashing#LC 347 · Top K Frequent Elements · 🟡 Medium\|Top K Frequent Elements]] | 01.3 Arrays › Hashing | Count map + size-k min-heap / bucket by frequency | 🟡 | ✅ |
+| 36 | [[03-Hashing#LC 36 · Valid Sudoku · 🟡 Medium\|Valid Sudoku]] | 01.3 Arrays › Hashing | Seen-set per row / column / box | 🟡 | ✅ |
+| 128 | [[03-Hashing#LC 128 · Longest Consecutive Sequence · 🟡 Medium\|Longest Consecutive Sequence]] | 01.3 Arrays › Hashing | HashSet, count from run starts | 🟡 | ✅ |
 | 238 | [[04-Prefix-Sum#LC 238 · Product of Array Except Self · 🟡 Medium\|Product of Array Except Self]] | 01.4 Arrays › Prefix Sum | Prefix × suffix, two passes | 🟡 | ✅ |

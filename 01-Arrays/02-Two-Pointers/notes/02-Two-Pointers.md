@@ -1,7 +1,7 @@
 ---
 tags: [dsa, pattern/arrays-hashing, pattern/arrays-hashing/two-pointers]
 status: learning
-last_revised: 2026-11-24
+last_revised: 2026-11-25
 ---
 
 # Two Pointers
@@ -460,7 +460,7 @@ return write;                             // new length
 > ```
 
 ### LC 80 · Remove Duplicates from Sorted Array II · 🟡 Medium
-[Link](https://leetcode.com/problems/remove-duplicates-from-sorted-array-ii/) · Confidence: ⚠️
+[Link](https://leetcode.com/problems/remove-duplicates-from-sorted-array-ii/) · Confidence: ✅
 
 - **Key insight:** the array is sorted, so equal values sit next to each other. Keep `nums[read]` only if it differs from the value two slots back in the kept prefix, `nums[write − 2]`. That allows at most two copies of each value.
 - **Approach:**
@@ -489,7 +489,7 @@ return write;                             // new length
 > ```
 
 ### LC 881 · Boats to Save People · 🟡 Medium
-[Link](https://leetcode.com/problems/boats-to-save-people/) · Confidence: ⚠️
+[Link](https://leetcode.com/problems/boats-to-save-people/) · Confidence: ✅
 
 - **Key insight:** sort, then the heaviest person always needs a boat. Pair them with the lightest person if the two fit. If even the lightest doesn't fit with the heaviest, nobody does, so the heaviest goes alone.
 - **Approach:**

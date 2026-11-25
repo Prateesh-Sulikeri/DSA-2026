@@ -1,7 +1,7 @@
 ---
 tags: [dsa, pattern/arrays-hashing, pattern/arrays-hashing/linear-scan]
 status: learning
-last_revised: 2026-11-20
+last_revised: 2026-11-25
 ---
 
 # Linear Scan
@@ -86,7 +86,7 @@ return best;
 > ```
 
 ### LC 169 · Majority Element · 🟢 Easy
-[Link](https://leetcode.com/problems/majority-element/) · Confidence: ⚠️
+[Link](https://leetcode.com/problems/majority-element/) · Confidence: ✅
 
 - **Key insight:** the majority element appears > n/2 times, so it survives pairing off every different pair (Boyer-Moore voting).
 - **Approach:**

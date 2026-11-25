@@ -7,7 +7,7 @@ public class RemoveDuplicatesFromSortedArrayII {
     // ===== SOLUTION =====
     static class Solution {
         public int removeDuplicates(int[] nums) {
-            int i = 0;
+            int i = 0; // SC: O(1)
             for (int j=0 ; j<nums.length ; j++) {
                 if (i<2 || nums[j] != nums[i-2]) {
                     nums[i] = nums[j];

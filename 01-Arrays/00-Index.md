@@ -1,7 +1,7 @@
 ---
 tags: [dsa, index, index/pattern, pattern/arrays-hashing]
 status: learning
-last_revised: 2026-11-24
+last_revised: 2026-11-25
 ---
 
 # 01 · Arrays: Index
@@ -58,7 +58,7 @@ Run a practice file with `java <ProblemName>.java` from its `code/` folder (or F
 | # | Problem | Sub-topic | Technique | Diff | Confidence | Practice file |
 |---|---------|-----------|-----------|------|-----------|---------------|
 | 1 | [[01-Linear-Scan#LC 1 · Two Sum (Brute Force) · 🟢 Easy\|Two Sum (Brute Force)]] | Linear Scan | Every pair, nested loops | 🟢 | ✅ | `TwoSumBruteForce.java` |
-| 169 | [[01-Linear-Scan#LC 169 · Majority Element · 🟢 Easy\|Majority Element]] | Linear Scan | Boyer-Moore | 🟢 | ⚠️ | `MajorityElement.java` |
+| 169 | [[01-Linear-Scan#LC 169 · Majority Element · 🟢 Easy\|Majority Element]] | Linear Scan | Boyer-Moore | 🟢 | ✅ | `MajorityElement.java` |
 | 53 | [[01-Linear-Scan#LC 53 · Maximum Subarray (Kadane's Algorithm) · 🟡 Medium\|Maximum Subarray (Kadane)]] | Linear Scan | Kadane | 🟡 | ❌ | `MaximumSubarray.java` |
 | 229 | [[01-Linear-Scan#LC 229 · Majority Element II · 🟡 Medium\|Majority Element II]] | Linear Scan | Boyer-Moore ×2 | 🟡 | ❌ | `MajorityElementII.java` |
 | 152 | [[01-Linear-Scan#LC 152 · Maximum Product Subarray · 🟡 Medium\|Maximum Product Subarray]] | Linear Scan | Kadane max+min | 🟡 | ❌ | `MaximumProductSubarray.java` |
@@ -70,11 +70,11 @@ Run a practice file with `java <ProblemName>.java` from its `code/` folder (or F
 | 611 | [[02-Two-Pointers#LC 611 · Valid Triangle Number · 🟡 Medium\|Valid Triangle Number]] | Two Pointers | Sort + fix largest + count | 🟡 | ✅ | `ValidTriangleNumber.java` |
 | 18 | [[02-Two-Pointers#LC 18 · 4Sum · 🟡 Medium\|4Sum]] | Two Pointers | Sort + fix 2 + pair | 🟡 | ✅ | `FourSum.java` |
 | 11 | [[02-Two-Pointers#LC 11 · Container With Most Water · 🟡 Medium\|Container With Most Water]] | Two Pointers | Opposite ends, move shorter | 🟡 | ✅ | `ContainerWithMostWater.java` |
-| 80 | [[02-Two-Pointers#LC 80 · Remove Duplicates from Sorted Array II · 🟡 Medium\|Remove Duplicates from Sorted Array II]] | Two Pointers | Slow / fast, compare `write − 2` | 🟡 | ⚠️ | `RemoveDuplicatesFromSortedArrayII.java` |
+| 80 | [[02-Two-Pointers#LC 80 · Remove Duplicates from Sorted Array II · 🟡 Medium\|Remove Duplicates from Sorted Array II]] | Two Pointers | Slow / fast, compare `write − 2` | 🟡 | ✅ | `RemoveDuplicatesFromSortedArrayII.java` |
 | 680 | [[02-Two-Pointers#LC 680 · Valid Palindrome II · 🟢 Easy\|Valid Palindrome II]] | Two Pointers | Opposite ends, one skip | 🟢 | ✅ | `ValidPalindromeII.java` |
 | 455 | [[02-Two-Pointers#LC 455 · Assign Cookies · 🟢 Easy\|Assign Cookies]] | Two Pointers | Sort both, greedy match | 🟢 | ✅ | `AssignCookies.java` |
 | 1 | [[02-Two-Pointers#LC 1 · Two Sum (Sort + Two Pointers) · 🟢 Easy\|Two Sum (Sort + Two Pointers)]] | Two Pointers | Sort (value, index) pairs + opposite ends | 🟢 | ✅ | `TwoSumTwoPointers.java` |
-| 881 | [[02-Two-Pointers#LC 881 · Boats to Save People · 🟡 Medium\|Boats to Save People]] | Two Pointers | Sort, heaviest + lightest | 🟡 | ⚠️ | `BoatsToSavePeople.java` |
+| 881 | [[02-Two-Pointers#LC 881 · Boats to Save People · 🟡 Medium\|Boats to Save People]] | Two Pointers | Sort, heaviest + lightest | 🟡 | ✅ | `BoatsToSavePeople.java` |
 | 31 | [[02-Two-Pointers#LC 31 · Next Permutation · 🟡 Medium\|Next Permutation]] | Two Pointers | Pivot, swap, reverse suffix | 🟡 | ❌ | `NextPermutation.java` |
 | 189 | [[02-Two-Pointers#LC 189 · Rotate Array · 🟡 Medium\|Rotate Array]] | Two Pointers | Three reverses | 🟡 | ✅ | `RotateArray.java` |
 | 42 | [[02-Two-Pointers#LC 42 · Trapping Rain Water · 🔴 Hard\|Trapping Rain Water]] | Two Pointers | Opposite ends, running max | 🔴 | ✅ | `TrappingRainWater.java` |
@@ -83,9 +83,9 @@ Run a practice file with `java <ProblemName>.java` from its `code/` folder (or F
 | 1 | [[03-Hashing#LC 1 · Two Sum (HashMap) · 🟢 Easy\|Two Sum (HashMap)]] | Hashing | HashMap complement | 🟢 | ✅ | `TwoSumHashMap.java` |
 | 169 | [[03-Hashing#LC 169 · Majority Element (HashMap) · 🟢 Easy\|Majority Element (HashMap)]] | Hashing | Frequency map, early exit | 🟢 | ✅ | `MajorityElementHashMap.java` |
 | 49 | [[03-Hashing#LC 49 · Group Anagrams · 🟡 Medium\|Group Anagrams]] | Hashing | Group by key (sorted word) | 🟡 | ✅ | `GroupAnagrams.java` |
-| 347 | [[03-Hashing#LC 347 · Top K Frequent Elements · 🟡 Medium\|Top K Frequent Elements]] | Hashing | Count map + bucket by frequency | 🟡 | ⚠️ | `TopKFrequentElements.java` |
-| 36 | [[03-Hashing#LC 36 · Valid Sudoku · 🟡 Medium\|Valid Sudoku]] | Hashing | Seen-set per row / column / box | 🟡 | ⚠️ | `ValidSudoku.java` |
-| 128 | [[03-Hashing#LC 128 · Longest Consecutive Sequence · 🟡 Medium\|Longest Consecutive Sequence]] | Hashing | HashSet, count from run starts | 🟡 | ⚠️ | `LongestConsecutiveSequence.java` |
+| 347 | [[03-Hashing#LC 347 · Top K Frequent Elements · 🟡 Medium\|Top K Frequent Elements]] | Hashing | Count map + size-k min-heap / bucket by frequency | 🟡 | ✅ | `TopKFrequentElements.java` |
+| 36 | [[03-Hashing#LC 36 · Valid Sudoku · 🟡 Medium\|Valid Sudoku]] | Hashing | Seen-set per row / column / box | 🟡 | ✅ | `ValidSudoku.java` |
+| 128 | [[03-Hashing#LC 128 · Longest Consecutive Sequence · 🟡 Medium\|Longest Consecutive Sequence]] | Hashing | HashSet, count from run starts | 🟡 | ✅ | `LongestConsecutiveSequence.java` |
 | 238 | [[04-Prefix-Sum#LC 238 · Product of Array Except Self · 🟡 Medium\|Product of Array Except Self]] | Prefix Sum | Prefix × suffix, two passes | 🟡 | ✅ | `ProductOfArrayExceptSelf.java` |
 
-**Totals:** 30 problems · ✅ 20 · ⚠️ 6 · ❌ 4 (Linear Scan 5 · Two Pointers 16 · Hashing 8 · Prefix Sum 1). LC 1 Two Sum and LC 169 Majority Element are counted once per approach.
+**Totals:** 30 problems · ✅ 26 · ⚠️ 0 · ❌ 4 (Linear Scan 5 · Two Pointers 16 · Hashing 8 · Prefix Sum 1). LC 1 Two Sum and LC 169 Majority Element are counted once per approach.

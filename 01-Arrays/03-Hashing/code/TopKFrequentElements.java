@@ -36,10 +36,10 @@ public class TopKFrequentElements {
             } // TC: O(k log k)   (k polls, each log k)
 
             return res;
-        } // TC: O(n) + O(m log k) + O(k log k) && SC: O(m) + O(k) + O(k) wkt k <= m
+        } // TC: O(n) + O(m log k) + O(k log k) · SC: O(m) + O(k) + O(k), and k <= m <= n
 
-        // TC: = O(n + mlogk)
-        // SC: O(m)
+        // TC: O(n + m log k)   (k log k <= m log k, so it drops)
+        // SC: O(m)             (k <= m, so the heap and result drop)
     }
 
     // ===== TESTS =====

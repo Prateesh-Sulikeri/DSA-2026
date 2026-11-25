@@ -23,7 +23,7 @@ public class MajorityElement {
         // SC: O(m)
 
         public int majorityElement2(int[] nums) {
-             int candidate = 0, count = 0;
+             int candidate = 0, count = 0; // SC: O(1)
 
              for (int n : nums) {
                  if (count == 0 ) candidate = n;

@@ -1,7 +1,7 @@
 ---
 tags: [dsa, pattern/arrays-hashing, pattern/arrays-hashing/hashing]
 status: learning
-last_revised: 2026-11-24
+last_revised: 2026-11-25
 ---
 
 # Hashing
@@ -260,7 +260,7 @@ for (int num : nums) {
 > ```
 
 ### LC 347 · Top K Frequent Elements · 🟡 Medium
-[Link](https://leetcode.com/problems/top-k-frequent-elements/) · Confidence: ⚠️
+[Link](https://leetcode.com/problems/top-k-frequent-elements/) · Confidence: ✅
 
 - **Key insight:** a frequency can never be more than `n`, so after counting with a HashMap, put each value in bucket `freq` (an array of lists of size `n + 1`) and read the buckets from the highest frequency down. That's a bucket sort, so it takes O(n) with no full sort.
 - **Approach:**
@@ -324,7 +324,7 @@ for (int num : nums) {
 > ```
 
 ### LC 36 · Valid Sudoku · 🟡 Medium
-[Link](https://leetcode.com/problems/valid-sudoku/) · Confidence: ⚠️
+[Link](https://leetcode.com/problems/valid-sudoku/) · Confidence: ✅
 
 - **Key insight:** each of the 9 rows, 9 columns and 9 boxes needs its own seen-set. Cell `(r, c)` belongs to box `(r / 3) * 3 + c / 3`, so one pass over the board checks all 27 sets.
 - **Approach:**
@@ -363,7 +363,7 @@ for (int num : nums) {
 > ```
 
 ### LC 128 · Longest Consecutive Sequence · 🟡 Medium
-[Link](https://leetcode.com/problems/longest-consecutive-sequence/) · Confidence: ⚠️
+[Link](https://leetcode.com/problems/longest-consecutive-sequence/) · Confidence: ✅
 
 - **Key insight:** put every number in a HashSet, then only start counting from a number `x` whose `x − 1` is NOT in the set (the start of a run). Every number is walked over at most once, so the whole thing is O(n) without sorting.
 - **Approach:**
